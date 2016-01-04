@@ -50,7 +50,24 @@ namespace GameElements
 					objects.pop_back() ;
 				}
 			}
-			if(objects.size()!=0) // If there is something to shoot, then open fire !!!! 
+		
+			// Remove friends from target list
+			for(int cpt=0 ; cpt<objects.size() ; ++cpt) {
+				Agent::Pointer ptr = boost::dynamic_pointer_cast<Agent>(objects[cpt]) ;
+				
+				std::string sLui = ptr->getArchetype()->m_name;
+				std::string sMoi = this->getArchetype()->m_name;
+				char sonType = sLui.back();
+				char monType = sMoi.back();
+
+				if (sonType == monType) {
+					::std::swap(objects[cpt], objects.back()) ;
+					objects.pop_back() ;
+					cpt--;
+				}
+			}
+
+			if(objects.size()!=0) // If there is something to shoot, then think before open fire !!!! 
 			{
 				int index = rand()%objects.size() ;
 				Agent::Pointer ptr = boost::dynamic_pointer_cast<Agent>(objects[index]) ;
@@ -60,7 +77,7 @@ namespace GameElements
 				char sonType = sLui.back();
 				char monType = sMoi.back();
 
-				if(ptr!=NULL && ptr != this && sonType!=monType)
+				if(ptr != this && sonType!=monType)
 				{
 					Math::Vector2<Config::Real> otherPosition = ptr->getPosition().projectZ() ;
 					Math::Vector2<Config::Real> otherVelocity = ptr->getVelocity() ;
