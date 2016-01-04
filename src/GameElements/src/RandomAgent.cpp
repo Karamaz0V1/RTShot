@@ -46,6 +46,7 @@ namespace GameElements
 				if(boost::dynamic_pointer_cast<Agent>(objects[cpt])==NULL)
 				{
 					::std::swap(objects[cpt], objects.back()) ;
+					cpt--;
 					objects.pop_back() ;
 				}
 			}
@@ -53,7 +54,13 @@ namespace GameElements
 			{
 				int index = rand()%objects.size() ;
 				Agent::Pointer ptr = boost::dynamic_pointer_cast<Agent>(objects[index]) ;
-				if(ptr!=NULL && ptr != this)
+				
+				std::string sLui = ptr->getArchetype()->m_name;
+				std::string sMoi = this->getArchetype()->m_name;
+				char sonType = sLui.back();
+				char monType = sMoi.back();
+
+				if(ptr!=NULL && ptr != this && sonType!=monType)
 				{
 					Math::Vector2<Config::Real> otherPosition = ptr->getPosition().projectZ() ;
 					Math::Vector2<Config::Real> otherVelocity = ptr->getVelocity() ;
