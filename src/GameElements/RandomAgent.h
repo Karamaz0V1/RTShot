@@ -19,6 +19,7 @@ namespace GameElements
 			return velocity ;
 		}
 
+		
 	public:
 		RandomAgent(const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh=true);
 
@@ -51,6 +52,12 @@ namespace GameElements
 		/// \return	The velocity.
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		virtual Math::Vector2<Config::Real> getVelocity() const;
+
+		
+		Map::GroundCellDescription findEnemyCell() const;
+
+		Math::Vector2<Config::Real> newVelocity(); 
+
 	};
 }
 
