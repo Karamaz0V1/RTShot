@@ -69,17 +69,7 @@ namespace GameElements
 
 			if(objects.size()!=0) // If there is something to shoot, then think before open fire !!!! 
 			{
-				int minTargetLifeInRange = boost::dynamic_pointer_cast<Agent>(objects[0])->getArchetype()->m_life;
-				int target = 0;
-				for(int cpt=1 ; cpt<objects.size() ; ++cpt) {
-					int targetLife = boost::dynamic_pointer_cast<Agent>(objects[0])->getArchetype()->m_life;
-					if (targetLife < minTargetLifeInRange) {
-						minTargetLifeInRange = targetLife;
-						int target = cpt;
-					}
-				}
-
-				Agent::Pointer ptr = boost::dynamic_pointer_cast<Agent>(objects[target]) ;
+				Agent::Pointer ptr = selectWeakestAgent(objects);
 				
 				Math::Vector2<Config::Real> otherPosition = ptr->getPosition().projectZ() ;
 				Math::Vector2<Config::Real> otherVelocity = ptr->getVelocity() ;

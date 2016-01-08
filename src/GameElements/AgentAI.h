@@ -7,6 +7,8 @@ namespace GameElements
 	class AgentAI : public Agent {
 		public:
 			AgentAI(const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh = true);
+		protected:
+			virtual Agent::Pointer selectWeakestAgent(const std::vector<Triggers::CollisionObject::Pointer> & objects) const;
 	};
 }
 #endif
