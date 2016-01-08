@@ -17,6 +17,7 @@ namespace GameElements
 		return m_velocity*(1.0-currentCell.m_speedReduction) ;
 	}
 
+
 	RandomAgent::RandomAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : Agent(archetype, weaponArchetype, computeCollisionMesh)
 	{
 		m_velocity = randomVelocity() ;
@@ -35,7 +36,7 @@ namespace GameElements
 		}
 		else
 		{
-			m_velocity = randomVelocity() ;
+			m_velocity = newVelocity() ;
 		}
 		// Handles perception and fires on agents
 		if(canFire())
@@ -90,5 +91,23 @@ namespace GameElements
 			}
 		}
 		m_perception->reset() ;
+	}
+
+	Map::GroundCellDescription RandomAgent::findEnemyCell() const
+	{
+		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
+		return ;
+	}
+
+	Math::Vector2<Config::Real> RandomAgent::newVelocity() 
+	{
+
+		Map::GroundCellDescription enemyCell = findEnemyCell();
+
+		//goToEnemyCell();
+
+		Math::Vector2<Config::Real> velocity(rand()-RAND_MAX/2, rand()-RAND_MAX/2) ;
+		velocity = velocity.normalized() * m_archetype->m_speed ;
+		return velocity ;
 	}
 }

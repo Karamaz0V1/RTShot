@@ -14,7 +14,7 @@ namespace GameElements
 		BulletBase * bullet = NULL ;
 		if(m_archetype->m_type=="straight")
 		{
-			Math::Vector2<Config::Real> velocity = (target-origin).normalized()*m_archetype->m_speed ;
+			Math::Vector2<Config::Real> velocity = (target-origin).normalized()*m_archetype->m_speed;
 			bullet = new GameElements::StraightBullet(OgreFramework::GlobalConfiguration::getGeometryLoader()->load(m_archetype->m_bulletMesh), m_archetype->m_strength, m_archetype->m_armorDamage, origin, velocity, m_archetype->m_range) ;
 			OgreFramework::GlobalConfiguration::playSound("../data/sound/laser.mp3");
 		}
