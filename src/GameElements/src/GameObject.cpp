@@ -6,6 +6,7 @@ namespace GameElements
 {
 	DesignPattern::StaticMember<System::MessageEmitter<GameObject::SelectedGameObjectMessage> > GameObject::m_selectedEmitter ;
 	DesignPattern::StaticMember<System::MessageEmitter<GameObject::UnselectedGameObjectMessage> > GameObject::m_unselectedEmitter ;
+	DesignPattern::StaticMember<System::MessageEmitter<GameObject::MovedGameObjectMessage> > GameObject::m_movedEmitter ;
 
 
 	GameObject::GameObject(Ogre::SceneNode * node)
@@ -25,6 +26,12 @@ namespace GameElements
 		getSelectedGameObjectEmitter()->send(SelectedGameObjectMessage(*this)) ;
 	}
 
+	void GameObject::onMovement(int x, int y)
+	{
+		OgreFramework::EntityAdapter::onMovement() ;
+		getMovedGameObjectEmitter()->send(MovedGameObjectMessage(*this,x,y)) ;
+	}
+
 	void GameObject::onUnselect()
 	{
 		OgreFramework::EntityAdapter::onUnselect() ;
@@ -34,6 +41,11 @@ namespace GameElements
 	System::MessageEmitter<GameObject::SelectedGameObjectMessage> * GameObject::getSelectedGameObjectEmitter()
 	{
 		return m_selectedEmitter.getInstance() ;
+	}
+
+	System::MessageEmitter<GameObject::MovedGameObjectMessage> * GameObject::getMovedGameObjectEmitter()
+	{
+		return m_movedEmitter.getInstance() ;
 	}
 
 	System::MessageEmitter<GameObject::UnselectedGameObjectMessage> * GameObject::getUnselectedGameObjectEmitter()

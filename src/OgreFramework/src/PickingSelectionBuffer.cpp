@@ -61,7 +61,11 @@ namespace OgreFramework
 				::std::cout<<"Picking on object: "<<selectedEntity->getName()<<::std::endl ;
 			}
 		}
-		
+		if(m_isActive && id!=m_button) {
+			int x = arg.state.X.abs;
+			int y = arg.state.Y.abs;
+			notifyMovement(m_lastSelected,x,y);
+		}
 	}
 
 	//void PickingSelectionBuffer::setActive( bool isActive )
