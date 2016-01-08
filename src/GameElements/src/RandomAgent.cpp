@@ -51,21 +51,7 @@ namespace GameElements
 				}
 			}
 		
-			// Remove friends from target list
-			for(int cpt=0 ; cpt<objects.size() ; ++cpt) {
-				Agent::Pointer ptr = boost::dynamic_pointer_cast<Agent>(objects[cpt]) ;
-				
-				std::string sLui = ptr->getArchetype()->m_name;
-				std::string sMoi = this->getArchetype()->m_name;
-				char sonType = sLui.back();
-				char monType = sMoi.back();
-
-				if (sonType == monType) {
-					::std::swap(objects[cpt], objects.back()) ;
-					objects.pop_back() ;
-					cpt--;
-				}
-			}
+			removeFriendFromAgentsList(objects);
 
 			if(objects.size()!=0) // If there is something to shoot, then think before open fire !!!! 
 			{
