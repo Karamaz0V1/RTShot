@@ -40,19 +40,10 @@ namespace GameElements
 		// Handles perception and fires on agents
 		if(canFire())
 		{
-			::std::vector<Triggers::CollisionObject::Pointer> objects = m_perception->perceivedAgents() ;
-			for(int cpt=0 ; cpt<objects.size() ; ++cpt)
-			{
-				if(boost::dynamic_pointer_cast<Agent>(objects[cpt])==NULL)
-				{
-					::std::swap(objects[cpt], objects.back()) ;
-					cpt--;
-					objects.pop_back() ;
-				}
-			}
+			std::vector<Triggers::CollisionObject::Pointer> objects = m_perception->perceivedAgents() ;
 			std::vector<Agent::Pointer> agents = getAgentsListFromObjectsList(objects);
-		
-			//removeFriendFromAgentsList(agents);
+
+			removeFriendFromAgentsList(agents);
 
 			if(agents.size() != 0) // If there is something to shoot, then think before open fire !!!! 
 			{

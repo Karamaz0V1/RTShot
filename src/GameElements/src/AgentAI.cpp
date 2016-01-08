@@ -18,9 +18,9 @@ namespace GameElements {
 		return weakest;
 	}
 
-	void AgentAI::removeFriendFromAgentsList(std::vector<Triggers::CollisionObject::Pointer> & agents) const {
+	void AgentAI::removeFriendFromAgentsList(vector<Agent::Pointer> & agents) const {
 		for(int cpt=0 ; cpt<agents.size() ; ++cpt) {
-			Agent::Pointer ptr = boost::dynamic_pointer_cast<Agent>(agents[cpt]) ;
+			Agent::Pointer ptr = agents[cpt];
 				
 			std::string sLui = ptr->getArchetype()->m_name;
 			std::string sMoi = this->getArchetype()->m_name;
@@ -37,8 +37,9 @@ namespace GameElements {
 
 	vector<Agent::Pointer> AgentAI::getAgentsListFromObjectsList(const vector<Triggers::CollisionObject::Pointer> & objects) const {
 		vector<Agent::Pointer> agentsList;
+
 		for (vector<Triggers::CollisionObject::Pointer>::const_iterator it = objects.begin(); it != objects.end(); it++)
-			if(boost::dynamic_pointer_cast<Agent>(*it)==NULL)
+			if(boost::dynamic_pointer_cast<Agent>(*it) != NULL)
 				agentsList.push_back(boost::dynamic_pointer_cast<Agent>(*it));
 
 		return agentsList;
