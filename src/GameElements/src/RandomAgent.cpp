@@ -17,7 +17,7 @@ namespace GameElements
 		return m_velocity*(1.0-currentCell.m_speedReduction) ;
 	}
 
-	RandomAgent::RandomAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : Agent(archetype, weaponArchetype, computeCollisionMesh)
+	RandomAgent::RandomAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : AgentAI(archetype, weaponArchetype, computeCollisionMesh)
 	{
 		m_velocity = randomVelocity() ;
 	}
