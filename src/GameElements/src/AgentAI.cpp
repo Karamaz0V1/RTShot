@@ -1,5 +1,8 @@
 #include <stdafx.h>
 #include <GameElements/AgentAI.h>
+
+using std::vector;
+
 namespace GameElements {
 	AgentAI::AgentAI( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : Agent(archetype, weaponArchetype, computeCollisionMesh)
 	{
@@ -18,7 +21,7 @@ namespace GameElements {
 		return boost::dynamic_pointer_cast<Agent>(agents[target]);
 	}
 
-	void AgentAI::removeFriendFromAgentsList(std::vector<Triggers::CollisionObject::Pointer> & agents) const {
+	void AgentAI::removeFriendFromAgentsList(vector<Triggers::CollisionObject::Pointer> & agents) const {
 		for(int cpt=0 ; cpt<agents.size() ; ++cpt) {
 			Agent::Pointer ptr = boost::dynamic_pointer_cast<Agent>(agents[cpt]) ;
 				
@@ -33,5 +36,14 @@ namespace GameElements {
 				cpt--;
 			}
 		}
+	}
+
+	vector<Agent::Pointer> AgentAI::getAgentsListFromObjectsList(const vector<Triggers::CollisionObject::Pointer> & objects) const {
+		vector<Agent::Pointer> agentsList;
+		for (vector<Triggers::CollisionObject::Pointer>::const_iterator it = objects.begin(); it != objects.end(); it++)
+			if(boost::dynamic_pointer_cast<Agent>(*it)==NULL)
+				agentsList.push_back(boost::dynamic_pointer_cast<Agent>(*it));
+
+		return agentsList;
 	}
 }

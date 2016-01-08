@@ -10,6 +10,7 @@ namespace GameElements
 		protected:
 			virtual Agent::Pointer selectWeakestAgent(const std::vector<Triggers::CollisionObject::Pointer> & agents) const;
 			virtual void removeFriendFromAgentsList(std::vector<Triggers::CollisionObject::Pointer> & agents) const;
+			virtual std::vector<Agent::Pointer> getAgentsListFromObjectsList(const std::vector<Triggers::CollisionObject::Pointer> & objects) const;
 	};
 }
 #endif

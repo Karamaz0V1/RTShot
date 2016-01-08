@@ -50,6 +50,7 @@ namespace GameElements
 					objects.pop_back() ;
 				}
 			}
+			std::vector<Agent::Pointer> agents = getAgentsListFromObjectsList(objects);
 		
 			removeFriendFromAgentsList(objects);
 
