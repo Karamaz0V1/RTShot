@@ -52,11 +52,11 @@ namespace GameElements
 			}
 			std::vector<Agent::Pointer> agents = getAgentsListFromObjectsList(objects);
 		
-			removeFriendFromAgentsList(objects);
+			//removeFriendFromAgentsList(agents);
 
-			if(objects.size()!=0) // If there is something to shoot, then think before open fire !!!! 
+			if(agents.size() != 0) // If there is something to shoot, then think before open fire !!!! 
 			{
-				Agent::Pointer ptr = selectWeakestAgent(objects);
+				Agent::Pointer ptr = selectWeakestAgent(agents);
 				
 				Math::Vector2<Config::Real> otherPosition = ptr->getPosition().projectZ() ;
 				Math::Vector2<Config::Real> otherVelocity = ptr->getVelocity() ;

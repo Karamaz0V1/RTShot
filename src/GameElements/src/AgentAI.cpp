@@ -8,20 +8,17 @@ namespace GameElements {
 	{
 	}
 
-	Agent::Pointer AgentAI::selectWeakestAgent(const std::vector<Triggers::CollisionObject::Pointer> & agents) const {
-		int minTargetLifeInRange = boost::dynamic_pointer_cast<Agent>(agents[0])->getArchetype()->m_life;
-		int target = 0;
-		for(int cpt=1 ; cpt<agents.size() ; ++cpt) {
-			int targetLife = boost::dynamic_pointer_cast<Agent>(agents[0])->getArchetype()->m_life;
-			if (targetLife < minTargetLifeInRange) {
-				minTargetLifeInRange = targetLife;
-				int target = cpt;
-			}
-		}
-		return boost::dynamic_pointer_cast<Agent>(agents[target]);
+	Agent::Pointer AgentAI::selectWeakestAgent(const vector<Agent::Pointer> & agents) const {
+		Agent::Pointer weakest = agents.front();
+
+		for(vector<Agent::Pointer>::const_iterator it = agents.begin() + 1; it != agents.end(); it++)
+			if ((*it)->getLifePoints() < weakest->getLifePoints())
+				weakest = *it;
+
+		return weakest;
 	}
 
-	void AgentAI::removeFriendFromAgentsList(vector<Triggers::CollisionObject::Pointer> & agents) const {
+	void AgentAI::removeFriendFromAgentsList(std::vector<Triggers::CollisionObject::Pointer> & agents) const {
 		for(int cpt=0 ; cpt<agents.size() ; ++cpt) {
 			Agent::Pointer ptr = boost::dynamic_pointer_cast<Agent>(agents[cpt]) ;
 				
