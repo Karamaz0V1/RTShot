@@ -10,13 +10,13 @@ namespace GameElements
 	{
 		Agent::Pointer agent1 = boost::dynamic_pointer_cast<Agent>(message.m_object1);
 		Agent::Pointer agent2 = boost::dynamic_pointer_cast<Agent>(message.m_object2);
-		if(agent1.get() != NULL && agent2.get() != NULL) {
-			std::cout << this->getArchetype()->m_name << "Collision détectée ! " << std::endl;
-			if (this == agent1.get())
-				m_velocity = (agent1->getPosition().projectZ() - agent2->getPosition().projectZ()).normalized() * getMaxSpeed();
-			else		// this == agent2
-				m_velocity = (agent2->getPosition().projectZ() - agent1->getPosition().projectZ()).normalized() * getMaxSpeed();
-		}
+
+		if(agent1.get() == NULL || agent2.get() == NULL) return;
+
+		if (this == agent1.get())
+			m_velocity = (agent1->getPosition().projectZ() - agent2->getPosition().projectZ()).normalized() * getMaxSpeed();
+		else		// this == agent2
+			m_velocity = (agent2->getPosition().projectZ() - agent1->getPosition().projectZ()).normalized() * getMaxSpeed();
 	}
 
 	Math::Vector2<Config::Real> RandomAgent::getVelocity() const
