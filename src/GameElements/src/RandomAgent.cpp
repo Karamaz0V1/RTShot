@@ -13,10 +13,16 @@ namespace GameElements
 
 		if(agent1.get() == NULL || agent2.get() == NULL) return;
 
+		if (m_velocity[0] * m_velocity[0] > m_velocity[1] * m_velocity[1])
+			m_velocity[1] = -m_velocity[1];
+		else
+			m_velocity[0] = -m_velocity[0];
+		/*
 		if (this == agent1.get())
 			m_velocity = (agent1->getPosition().projectZ() - agent2->getPosition().projectZ()).normalized() * getMaxSpeed();
 		else		// this == agent2
 			m_velocity = (agent2->getPosition().projectZ() - agent1->getPosition().projectZ()).normalized() * getMaxSpeed();
+		*/
 	}
 
 	Math::Vector2<Config::Real> RandomAgent::getVelocity() const
