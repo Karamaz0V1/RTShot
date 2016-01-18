@@ -8,9 +8,14 @@ namespace GameElements
 
 	void RandomAgent::onCollision( const CollisionMessage & message )
 	{
-		if(boost::dynamic_pointer_cast<Agent>(message.m_object1) != NULL && boost::dynamic_pointer_cast<Agent>(message.m_object2) != NULL) {
+		Agent::Pointer agent1 = boost::dynamic_pointer_cast<Agent>(message.m_object1);
+		Agent::Pointer agent2 = boost::dynamic_pointer_cast<Agent>(message.m_object2);
+		if(agent1.get() != NULL && agent2.get() != NULL) {
 			std::cout << this->getArchetype()->m_name << "Collision détectée ! " << std::endl;
-			m_velocity = randomVelocity() ;
+			if (this == agent1.get())
+				m_velocity = (agent1->getPosition().projectZ() - agent2->getPosition().projectZ()).normalized() * getMaxSpeed();
+			else		// this == agent2
+				m_velocity = (agent2->getPosition().projectZ() - agent1->getPosition().projectZ()).normalized() * getMaxSpeed();
 		}
 	}
 
