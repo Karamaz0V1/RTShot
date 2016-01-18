@@ -83,6 +83,18 @@ namespace OgreFramework
 		//}
 	}
 
+	void Picking::notifyMovement( Ogre::MovableObject * object, int x, int y )
+	{
+		if(object==NULL) { return ; }		
+
+		const ::std::map<Ogre::Entity*, PickableObject*> & pickableObjects = *PickableObject::m_pickableInstances.getInstance() ;
+		auto it = pickableObjects.find((Ogre::Entity*)(object)) ;
+		if(it!=pickableObjects.end())
+		{
+			it->second->onMovement(x,y) ;
+		}
+	}
+
 	void Picking::notifyUnselected( Ogre::MovableObject * object )
 	{
 		if(object==NULL) { return ; }		

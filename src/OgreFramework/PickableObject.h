@@ -60,6 +60,16 @@ namespace OgreFramework
 			{}
 		};
 
+		struct MovedObjectMessage
+		{
+			PickableObject & m_selected;
+			int m_x;
+			int m_y;
+
+			MovedObjectMessage(PickableObject & object,int x, int y)
+				: m_selected(object), m_x(x), m_y(y)
+			{}
+		};
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// \struct	UnselectedObjectMessage
 		///
@@ -80,6 +90,7 @@ namespace OgreFramework
 	private:
 		static DesignPattern::StaticMember<System::MessageEmitter<SelectedObjectMessage> > m_selectedEmitter ;
 		static DesignPattern::StaticMember<System::MessageEmitter<UnselectedObjectMessage> > m_unselectedEmitter ;
+		static DesignPattern::StaticMember<System::MessageEmitter<MovedObjectMessage> > m_movedEmitter;
 	
 	public:
 
@@ -94,6 +105,7 @@ namespace OgreFramework
 		/// \return	null if it fails, else the selected emitter.
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		static System::MessageEmitter<SelectedObjectMessage> * getSelectedEmitter();
+		static System::MessageEmitter<MovedObjectMessage> * getMovedEmitter();
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// \fn	static System::MessageEmitter<UnselectedObjectMessage> * PickableObject::getUnselectedEmitter()
@@ -138,6 +150,7 @@ namespace OgreFramework
 		/// \date	26/11/2011
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		virtual void onSelect();
+		virtual void onMovement(int x,int y);
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// \fn	virtual void PickableObject::onUnselect() = 0;
