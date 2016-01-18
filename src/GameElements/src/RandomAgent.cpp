@@ -96,7 +96,10 @@ namespace GameElements
 	Map::GroundCellDescription RandomAgent::findEnemyCell() const
 	{
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
-		return ;
+
+
+
+		return currentCell;
 	}
 
 	Math::Vector2<Config::Real> RandomAgent::newVelocity() 
