@@ -51,6 +51,17 @@ namespace GameElements
 			{}
 		};
 
+		struct MovedGameObjectMessage
+		{
+			GameObject & m_selected ;
+			int m_x;
+			int m_y;
+
+			MovedGameObjectMessage(GameObject & selected, int x, int y)
+				: m_selected(selected), m_x(x), m_y(y)
+			{}
+		};
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// \struct	UnselectedGameObjectMessage
 		///

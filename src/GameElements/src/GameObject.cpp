@@ -28,7 +28,7 @@ namespace GameElements
 
 	void GameObject::onMovement(int x, int y)
 	{
-		OgreFramework::EntityAdapter::onMovement() ;
+		OgreFramework::EntityAdapter::onMovement(x,y) ;
 		getMovedGameObjectEmitter()->send(MovedGameObjectMessage(*this,x,y)) ;
 	}
 
