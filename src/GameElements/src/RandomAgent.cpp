@@ -8,7 +8,10 @@ namespace GameElements
 
 	void RandomAgent::onCollision( const CollisionMessage & message )
 	{
-
+		if(boost::dynamic_pointer_cast<Agent>(message.m_object1) != NULL && boost::dynamic_pointer_cast<Agent>(message.m_object2) != NULL) {
+			std::cout << this->getArchetype()->m_name << "Collision détectée ! " << std::endl;
+			m_velocity = randomVelocity() ;
+		}
 	}
 
 	Math::Vector2<Config::Real> RandomAgent::getVelocity() const
@@ -27,6 +30,12 @@ namespace GameElements
 		// Computes movements
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
 		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
+
+		std::vector<Triggers::CollisionObject::Pointer> objects = m_perception->perceivedAgents();
+		//for (std::vector<Triggers::CollisionObject::Pointer>::const_iterator it = objects.begin(); it != objects.end(); it++) {
+			//(*it)->
+		//}
+
 		// If displacement is valid, the agent moves, otherwise, a new random velocity is computed
 		if(OgreFramework::GlobalConfiguration::getCurrentMap()->isValid(newPosition) && OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(newPosition).m_speedReduction!=1.0)
 		{
@@ -37,10 +46,10 @@ namespace GameElements
 		{
 			m_velocity = newVelocity() ;
 		}
+
 		// Handles perception and fires on agents
 		if(canFire())
 		{
-			std::vector<Triggers::CollisionObject::Pointer> objects = m_perception->perceivedAgents() ;
 			std::vector<Agent::Pointer> agents = getAgentsListFromObjectsList(objects);
 
 			removeFriendFromAgentsList(agents);
