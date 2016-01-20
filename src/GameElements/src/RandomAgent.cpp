@@ -4,8 +4,6 @@
 
 namespace GameElements
 {
-
-
 	void RandomAgent::onCollision( const CollisionMessage & message )
 	{
 		Agent::Pointer agent1 = boost::dynamic_pointer_cast<Agent>(message.m_object1);
@@ -25,14 +23,8 @@ namespace GameElements
 		*/
 	}
 
-	Math::Vector2<Config::Real> RandomAgent::getVelocity() const
-	{
-		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
-		return m_velocity*(1.0-currentCell.m_speedReduction) ;
-	}
 
-	RandomAgent::RandomAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : AgentAI(archetype, weaponArchetype, computeCollisionMesh)
-	{
+	RandomAgent::RandomAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : SmithAgent(archetype, weaponArchetype, computeCollisionMesh) {
 		m_velocity = randomVelocity() ;
 	}
 
@@ -52,10 +44,8 @@ namespace GameElements
 		{
 			setOrientation(m_velocity) ;
 			setPosition(newPosition.push(0.0)) ;
-		}
-		else
-		{
-			m_velocity = newVelocity() ;
+		} else {
+			m_velocity = randomVelocity() ;
 		}
 
 		// Handles perception and fires on agents
@@ -89,17 +79,5 @@ namespace GameElements
 
 
 		return currentCell;
-	}
-
-	Math::Vector2<Config::Real> RandomAgent::newVelocity() 
-	{
-
-		Map::GroundCellDescription enemyCell = findEnemyCell();
-
-		//goToEnemyCell();
-
-		Math::Vector2<Config::Real> velocity(rand()-RAND_MAX/2, rand()-RAND_MAX/2) ;
-		velocity = velocity.normalized() * m_archetype->m_speed ;
-		return velocity ;
 	}
 }

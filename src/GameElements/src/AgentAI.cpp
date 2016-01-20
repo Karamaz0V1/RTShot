@@ -24,7 +24,7 @@ namespace GameElements {
 		std::string sMoi = this->getArchetype()->m_name;
 		char monType = sMoi.back();
 
-		for(int cpt=0 ; cpt<agents.size() ; ++cpt) {
+		for(unsigned int cpt=0 ; cpt < agents.size() ; ++cpt) {
 			Agent::Pointer ptr = agents[cpt];
 				
 			std::string sLui = ptr->getArchetype()->m_name;

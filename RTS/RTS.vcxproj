@@ -279,7 +279,9 @@ echo "Done"
     <ClInclude Include="..\src\Ext\std\string_utils.h" />
     <ClInclude Include="..\src\Ext\TinyXML\Helpers.h" />
     <ClInclude Include="..\src\GameElements\aEtoile.h" />
-    <ClInclude Include="..\src\GameElements\AgentAI.h" />
+    <ClInclude Include="..\src\GameElements\ComputerAgent.h" />
+    <ClInclude Include="..\src\GameElements\HumanAgent.h" />
+    <ClInclude Include="..\src\GameElements\SmithAgent.h" />
     <ClInclude Include="..\src\GameElements\BallisticBullet.h" />
     <ClInclude Include="..\src\GameElements\BulletBase.h" />
     <ClInclude Include="..\src\GameElements\ConfigurationLoader.h" />
@@ -356,7 +358,9 @@ echo "Done"
     <ClCompile Include="..\src\Ext\Ogre\src\NodeManipulation.cpp" />
     <ClCompile Include="..\src\Ext\std\src\string_utils.cpp" />
     <ClCompile Include="..\src\GameElements\src\aEtoile.cpp" />
-    <ClCompile Include="..\src\GameElements\src\AgentAI.cpp" />
+    <ClCompile Include="..\src\GameElements\src\ComputerAgent.cpp" />
+    <ClCompile Include="..\src\GameElements\src\HumanAgent.cpp" />
+    <ClCompile Include="..\src\GameElements\src\SmithAgent.cpp" />
     <ClCompile Include="..\src\GameElements\src\BallisticBullet.cpp" />
     <ClCompile Include="..\src\GameElements\src\BulletBase.cpp" />
     <ClCompile Include="..\src\GameElements\src\ConfigurationLoader.cpp" />
