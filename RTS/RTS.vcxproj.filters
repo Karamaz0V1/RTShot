@@ -298,6 +298,9 @@
     <ClInclude Include="..\src\GameElements\aEtoile.h">
       <Filter>GameElements</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\GameElements\dijkstra.h">
+      <Filter>GameElements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\System\src\ActiveObject.cpp">
@@ -442,6 +445,9 @@
       <Filter>GameElements\src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\GameElements\src\aEtoile.cpp">
+      <Filter>GameElements\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GameElements\src\dijkstra.cpp">
       <Filter>GameElements\src</Filter>
     </ClCompile>
   </ItemGroup>

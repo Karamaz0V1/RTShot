@@ -3,6 +3,12 @@
 
 namespace GameElements
 {
+	struct path
+	{
+		Config::Real pathCost;
+		Math::Vector2<Config::Real> maPos;
+		Math::Vector2<Config::Real> monPred;		
+	};
 	aEtoile::aEtoile(Math::Vector2<Config::Real> & actualPosition, Math::Vector2<Config::Real> & desiredPosition):actualPosition(actualPosition),desiredPosition(desiredPosition)
 	{
 	}
@@ -14,9 +20,9 @@ namespace GameElements
 
 	void aEtoile::myWay()
 	{
-		//Q.push(H(source), source)
-		Math::Vector2<Config::Real>  source=actualPosition;
-		std::pair<Config::Real, Math::Vector2<Config::Real>> paire(heuristic(source, desiredPosition),source);
+		/*//Q.push(H(source), source)
+		struct path source={0.0 , actualPosition, NULL};
+		std::pair<Config::Real, path> paire(heuristic(source.maPos, desiredPosition),source);
 			
 		std::vector<std::pair<Config::Real,Math::Vector2<Config::Real> > > Q;
 		
@@ -46,7 +52,7 @@ namespace GameElements
 					//pre[S]=c	
 				}
 			}
-		}
+		}*/
 	}
 
 	Config::Real aEtoile::heuristic(Math::Vector2<Config::Real> & actualPosition, Math::Vector2<Config::Real> & desiredPosition)
