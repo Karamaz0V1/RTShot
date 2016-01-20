@@ -1,24 +1,12 @@
 #ifndef _GameElements_RandomAgent_H
 #define _GameElements_RandomAgent_H
 
-#include <GameElements/AgentAI.h>
-#include <OgreFramework/GlobalConfiguration.h>
+#include <GameElements/SmithAgent.h>
 
 namespace GameElements
 {
-	class RandomAgent : public AgentAI
+	class RandomAgent : public SmithAgent
 	{
-	protected:
-		Math::Vector2<Config::Real> m_velocity ;
-
-
-		Math::Vector2<Config::Real> randomVelocity()
-		{
-			Math::Vector2<Config::Real> velocity(rand()-RAND_MAX/2, rand()-RAND_MAX/2) ;
-			velocity = velocity.normalized() * m_archetype->m_speed ;
-			return velocity ;
-		}
-
 		
 	public:
 		RandomAgent(const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh=true);
@@ -43,21 +31,7 @@ namespace GameElements
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		virtual void onCollision (const CollisionMessage & message);
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// \fn	virtual Math::Vector2<Config::Real> RandomAgent::getVelocity() const
-		///
-		/// \brief	Gets the velocity.
-		///
-		/// \author	Fabrice Lamarche, university of Rennes 1
-		/// \return	The velocity.
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		virtual Math::Vector2<Config::Real> getVelocity() const;
-
-		
 		Map::GroundCellDescription findEnemyCell() const;
-
-		Math::Vector2<Config::Real> newVelocity(); 
-
 	};
 }
 

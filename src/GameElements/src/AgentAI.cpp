@@ -2,6 +2,8 @@
 #include <GameElements/AgentAI.h>
 
 using std::vector;
+using std::cout;
+using std::endl;
 
 namespace GameElements {
 	AgentAI::AgentAI( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : Agent(archetype, weaponArchetype, computeCollisionMesh)
@@ -19,13 +21,14 @@ namespace GameElements {
 	}
 
 	void AgentAI::removeFriendFromAgentsList(vector<Agent::Pointer> & agents) const {
-		for(int cpt=0 ; cpt<agents.size() ; ++cpt) {
+		std::string sMoi = this->getArchetype()->m_name;
+		char monType = sMoi.back();
+
+		for(unsigned int cpt=0 ; cpt < agents.size() ; ++cpt) {
 			Agent::Pointer ptr = agents[cpt];
 				
 			std::string sLui = ptr->getArchetype()->m_name;
-			std::string sMoi = this->getArchetype()->m_name;
 			char sonType = sLui.back();
-			char monType = sMoi.back();
 
 			if (sonType == monType) {
 				::std::swap(agents[cpt], agents.back()) ;
@@ -43,5 +46,9 @@ namespace GameElements {
 				agentsList.push_back(boost::dynamic_pointer_cast<Agent>(*it));
 
 		return agentsList;
+	}
+
+	void AgentAI::update( const Config::Real & dt ) {
+		cout << "Agent AI update" << endl;
 	}
 }

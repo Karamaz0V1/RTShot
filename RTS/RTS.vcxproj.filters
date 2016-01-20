@@ -292,10 +292,16 @@
     <ClInclude Include="..\src\Ogre\CollectEntities.h">
       <Filter>Ogre</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\GameElements\AgentAI.h">
+    <ClInclude Include="..\src\GameElements\aEtoile.h">
       <Filter>GameElements</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\GameElements\aEtoile.h">
+    <ClInclude Include="..\src\GameElements\SmithAgent.h">
+      <Filter>GameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GameElements\HumanAgent.h">
+      <Filter>GameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GameElements\ComputerAgent.h">
       <Filter>GameElements</Filter>
     </ClInclude>
     <ClInclude Include="..\src\GameElements\dijkstra.h">
@@ -441,10 +447,16 @@
     <ClCompile Include="..\src\Ogre\src\collectEntities.cpp">
       <Filter>Ogre\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\GameElements\src\AgentAI.cpp">
+    <ClCompile Include="..\src\GameElements\src\aEtoile.cpp">
       <Filter>GameElements\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\GameElements\src\aEtoile.cpp">
+    <ClCompile Include="..\src\GameElements\src\SmithAgent.cpp">
+      <Filter>GameElements\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GameElements\src\HumanAgent.cpp">
+      <Filter>GameElements\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GameElements\src\ComputerAgent.cpp">
       <Filter>GameElements\src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\GameElements\src\dijkstra.cpp">
