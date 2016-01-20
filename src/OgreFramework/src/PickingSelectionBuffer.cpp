@@ -65,6 +65,7 @@ namespace OgreFramework
 			int x = arg.state.X.abs;
 			int y = arg.state.Y.abs;
 			notifyMovement(m_lastSelected,x,y);
+			::std::cout<<"Moving object: "<<m_lastSelected->getName()<<::std::endl ;
 		}
 	}
 

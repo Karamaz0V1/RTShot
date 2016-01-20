@@ -82,7 +82,7 @@ namespace GameElements
 	private:
 		///< The selected emitter
 		static DesignPattern::StaticMember<System::MessageEmitter<SelectedGameObjectMessage> > m_selectedEmitter ;
-		static DesignPattern::StaticMember<System::MessageEmitter<MovedGameObjectMessage> > m_movedEmitter ;
+		//static DesignPattern::StaticMember<System::MessageEmitter<MovedGameObjectMessage> > m_movedEmitter ;
 		///< The unselected emitter
 		static DesignPattern::StaticMember<System::MessageEmitter<UnselectedGameObjectMessage> > m_unselectedEmitter ;
 
@@ -114,7 +114,7 @@ namespace GameElements
 		/// \return	the emitter.
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		static System::MessageEmitter<SelectedGameObjectMessage> * getSelectedGameObjectEmitter();
-		static System::MessageEmitter<MovedGameObjectMessage> * getMovedGameObjectEmitter();
+		//static System::MessageEmitter<MovedGameObjectMessage> * getMovedGameObjectEmitter();
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// \fn	static System::MessageEmitter<UnselectedGameObjectMessage> * GameObject::getUnselectedGameObjectEmitter()
 		///
