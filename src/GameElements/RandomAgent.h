@@ -2,6 +2,7 @@
 #define _GameElements_RandomAgent_H
 
 #include <GameElements/SmithAgent.h>
+#include <Math/RoadMap.h>
 
 namespace GameElements
 {
@@ -32,6 +33,9 @@ namespace GameElements
 		virtual void onCollision (const CollisionMessage & message);
 
 		Map::GroundCellDescription findEnemyCell() const;
+	private:
+		Math::RoadMap * _map;
+
 	};
 }
 

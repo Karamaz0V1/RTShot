@@ -9,10 +9,12 @@
 namespace Math {
 	class RoadMap {
 		public:
-			RoadMap(Math::Vector2<Config::Real> & targetPosition, std::vector<Math::Vector2<Config::Real> > & agentsPositions);
+			RoadMap(Math::Vector2<Config::Real> & targetPosition = Math::Vector2<Config::Real>(), std::vector<Math::Vector2<Config::Real> > & agentsPositions = std::vector<Math::Vector2<Config::Real> >());
+			virtual ~RoadMap();
 
 		private:
-			std::array<int, 100> _roadMap;
+			std::array<int, 100> _roadMap; // TODO: recreate game map space in array cf. RandomAgent
+			DataStructure::Grid<int> * _map;
 	};
 }
 
