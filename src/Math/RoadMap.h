@@ -13,8 +13,8 @@ namespace Math {
 			virtual ~RoadMap();
 
 		private:
-			std::array<int, 100> _roadMap; // TODO: recreate game map space in array cf. RandomAgent
-			DataStructure::Grid<int> _map;
+			//std::array<int, 100> _roadMap; // TODO: recreate game map space in array cf. RandomAgent
+			DataStructure::Grid<unsigned int> _map;
 	};
 }
 
