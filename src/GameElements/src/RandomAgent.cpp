@@ -10,17 +10,18 @@ namespace GameElements
 		Agent::Pointer agent2 = boost::dynamic_pointer_cast<Agent>(message.m_object2);
 
 		if(agent1.get() == NULL || agent2.get() == NULL) return;
-
+		
 		if (m_velocity[0] * m_velocity[0] > m_velocity[1] * m_velocity[1])
 			m_velocity[1] = -m_velocity[1];
 		else
 			m_velocity[0] = -m_velocity[0];
-		/*
-		if (this == agent1.get())
+		
+		
+		/*if (this == agent1.get())
 			m_velocity = (agent1->getPosition().projectZ() - agent2->getPosition().projectZ()).normalized() * getMaxSpeed();
 		else		// this == agent2
-			m_velocity = (agent2->getPosition().projectZ() - agent1->getPosition().projectZ()).normalized() * getMaxSpeed();
-		*/
+			m_velocity = (agent2->getPosition().projectZ() - agent1->getPosition().projectZ()).normalized() * getMaxSpeed();*/
+		
 	}
 
 	RandomAgent::RandomAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : SmithAgent(archetype, weaponArchetype, computeCollisionMesh) {
@@ -46,7 +47,6 @@ namespace GameElements
 		} else {
 			m_velocity = randomVelocity() ;
 		}
-
 		// Handles perception and fires on agents
 		if(canFire())
 		{
