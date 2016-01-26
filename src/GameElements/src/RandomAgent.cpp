@@ -17,8 +17,7 @@ namespace GameElements
 		return m_velocity*(1.0-currentCell.m_speedReduction) ;
 	}
 
-
-	RandomAgent::RandomAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : Agent(archetype, weaponArchetype, computeCollisionMesh)
+	RandomAgent::RandomAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : /*AgentAI*/AgentMovement(archetype, weaponArchetype, computeCollisionMesh)
 	{
 		m_velocity = randomVelocity() ;
 	}
@@ -32,7 +31,7 @@ namespace GameElements
 		if(OgreFramework::GlobalConfiguration::getCurrentMap()->isValid(newPosition) && OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(newPosition).m_speedReduction!=1.0)
 		{
 			setOrientation(m_velocity) ;
-			setPosition(newPosition.push(0.0)) ;
+			setPosition(newPosition.push(getPosition()[2])) ;
 		}
 		else
 		{
@@ -41,53 +40,23 @@ namespace GameElements
 		// Handles perception and fires on agents
 		if(canFire())
 		{
-			::std::vector<Triggers::CollisionObject::Pointer> objects = m_perception->perceivedAgents() ;
-			for(int cpt=0 ; cpt<objects.size() ; ++cpt)
+			std::vector<Triggers::CollisionObject::Pointer> objects = m_perception->perceivedAgents() ;
+			std::vector<Agent::Pointer> agents = getAgentsListFromObjectsList(objects);
+
+			removeFriendFromAgentsList(agents);
+
+			if(agents.size() != 0) // If there is something to shoot, then think before open fire !!!! 
 			{
-				if(boost::dynamic_pointer_cast<Agent>(objects[cpt])==NULL)
-				{
-					::std::swap(objects[cpt], objects.back()) ;
-					cpt--;
-					objects.pop_back() ;
-				}
-			}
-		
-			// Remove friends from target list
-			for(int cpt=0 ; cpt<objects.size() ; ++cpt) {
-				Agent::Pointer ptr = boost::dynamic_pointer_cast<Agent>(objects[cpt]) ;
+				Agent::Pointer ptr = selectWeakestAgent(agents);
 				
-				std::string sLui = ptr->getArchetype()->m_name;
-				std::string sMoi = this->getArchetype()->m_name;
-				char sonType = sLui.back();
-				char monType = sMoi.back();
-
-				if (sonType == monType) {
-					::std::swap(objects[cpt], objects.back()) ;
-					objects.pop_back() ;
-					cpt--;
-				}
-			}
-
-			if(objects.size()!=0) // If there is something to shoot, then think before open fire !!!! 
-			{
-				int index = rand()%objects.size() ;
-				Agent::Pointer ptr = boost::dynamic_pointer_cast<Agent>(objects[index]) ;
+				Math::Vector2<Config::Real> otherPosition = ptr->getPosition().projectZ() ;
+				Math::Vector2<Config::Real> otherVelocity = ptr->getVelocity() ;
+				Config::Real bulletSpeed = m_weapon.getArchetype()->m_speed ;
+				Config::Real distanceToTarget = (getPosition().projectZ()-otherPosition).norm() ;
+				Config::Real timeToTarget = distanceToTarget/bulletSpeed ;
+				fire(otherPosition+otherVelocity*timeToTarget) ;
+				//fire(ptr->getPosition().projectZ()) ;
 				
-				std::string sLui = ptr->getArchetype()->m_name;
-				std::string sMoi = this->getArchetype()->m_name;
-				char sonType = sLui.back();
-				char monType = sMoi.back();
-
-				if(ptr != this && sonType!=monType)
-				{
-					Math::Vector2<Config::Real> otherPosition = ptr->getPosition().projectZ() ;
-					Math::Vector2<Config::Real> otherVelocity = ptr->getVelocity() ;
-					Config::Real bulletSpeed = m_weapon.getArchetype()->m_speed ;
-					Config::Real distanceToTarget = (getPosition().projectZ()-otherPosition).norm() ;
-					Config::Real timeToTarget = distanceToTarget/bulletSpeed ;
-					fire(otherPosition+otherVelocity*timeToTarget) ;
-					//fire(ptr->getPosition().projectZ()) ;
-				}
 			}
 		}
 		m_perception->reset() ;

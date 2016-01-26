@@ -53,7 +53,7 @@ namespace OgreFramework
 	void PickableObject::onMovement(int x, int y)
 	{
 		::std::cout<<"Je suis PickableObject::onMovement()"<<::std::endl ;
-		getMovedEmitter()->send(MovedObjectMessage(*this,x,y)) ;
+		//getMovedEmitter()->send(MovedObjectMessage(*this,x,y)) ;
 	}
 
 	void PickableObject::onUnselect()

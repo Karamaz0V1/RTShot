@@ -293,6 +293,12 @@
       <Filter>Ogre</Filter>
     </ClInclude>
     <ClInclude Include="..\src\GameElements\AgentMovement.h">
+	  <Filter>GameElements</Filter>
+	</ClInclude>
+    <ClInclude Include="..\src\GameElements\AgentAI.h">
+      <Filter>GameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GameElements\aEtoile.h">
       <Filter>GameElements</Filter>
     </ClInclude>
   </ItemGroup>
@@ -436,6 +442,12 @@
       <Filter>Ogre\src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\GameElements\src\AgentMovement.cpp">
+	  <Filter>GameElements\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GameElements\src\AgentAI.cpp">
+      <Filter>GameElements\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GameElements\src\aEtoile.cpp">
       <Filter>GameElements\src</Filter>
     </ClCompile>
   </ItemGroup>

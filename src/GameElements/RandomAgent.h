@@ -1,12 +1,13 @@
 #ifndef _GameElements_RandomAgent_H
 #define _GameElements_RandomAgent_H
 
-#include <GameElements/Agent.h>
+#include <GameElements/AgentAI.h>
+#include <GameElements/AgentMovement.h>
 #include <OgreFramework/GlobalConfiguration.h>
 
 namespace GameElements
 {
-	class RandomAgent : public Agent
+	class RandomAgent : /*public AgentAI,*/ public AgentMovement
 	{
 	protected:
 		Math::Vector2<Config::Real> m_velocity ;
