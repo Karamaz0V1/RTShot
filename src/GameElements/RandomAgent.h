@@ -32,6 +32,9 @@ namespace GameElements
 		virtual void onCollision (const CollisionMessage & message);
 
 		Map::GroundCellDescription findEnemyCell() const;
+	protected:
+		//refresh collision
+			bool microsoftRecrute;
 	};
 }
 
