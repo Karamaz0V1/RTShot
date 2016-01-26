@@ -83,7 +83,7 @@ namespace OgreFramework
 		//}
 	}
 
-	void Picking::notifyMovement( Ogre::MovableObject * object, int x, int y )
+	/*void Picking::notifyMovement( Ogre::MovableObject * object, int x, int y )
 	{
 		if(object==NULL) { return ; }		
 
@@ -93,7 +93,7 @@ namespace OgreFramework
 		{
 			it->second->onMovement(x,y) ;
 		}
-	}
+	}*/
 
 	void Picking::notifyUnselected( Ogre::MovableObject * object )
 	{

@@ -42,7 +42,7 @@ namespace OgreFramework
 
 	void EntityAdapter::onSelect()
 	{
-		//::std::cout<<"Je suis EntityAdapter::onSelect()"<<::std::endl ;
+		::std::cout<<"Je suis EntityAdapter::onSelect()"<<::std::endl ;
 		PickableObject::onSelect() ;
  		m_entity->showBoundingBox(true) ;
 	}

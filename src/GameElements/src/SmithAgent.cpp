@@ -7,7 +7,24 @@ using std::cout;
 using std::endl;
 
 namespace GameElements {
+	DesignPattern::StaticMember<System::MessageEmitter<SmithAgent::MovedObjectMessage> > SmithAgent::m_movedEmitter ;
+	
 	SmithAgent::SmithAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : Agent(archetype, weaponArchetype, computeCollisionMesh) {
+	}
+
+	System::MessageEmitter<PickableObject::MovedObjectMessage> * PickableObject::getMovedEmitter()
+	{
+		return m_movedEmitter.getInstance() ;
+	}
+
+	void SmithAgent::noticeMeSenpai()
+	{
+		getMovedEmitter()->send(MovedObjectMessage(*this)) ;
+	}
+
+	void SmithAgent::setdestination()
+	{
+		::std::cout<<"Destination..."<<::std::endl ;
 	}
 
 	Agent::Pointer SmithAgent::selectWeakestAgent(const vector<Agent::Pointer> & agents) const {

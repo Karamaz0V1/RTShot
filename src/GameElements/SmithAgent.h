@@ -8,8 +8,24 @@ namespace GameElements
 {
 	class SmithAgent : public Agent {
 		public:
+
+			struct MovedObjectMessage
+		{
+			SmithAgent & m_selected;
+
+			MovedObjectMessage(SmithAgent & object)
+				: m_selected(object)
+			{}
+		};
+
 			SmithAgent(const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh = true);
 			virtual void update(const Config::Real & dt);
+			void noticeMeSenpai();
+
+	private:
+		static DesignPattern::StaticMember<System::MessageEmitter<MovedObjectMessage> > m_movedEmitter;
+	public:
+		static System::MessageEmitter<MovedObjectMessage> * getMovedEmitter();
 
 		protected:
 			Math::Vector2<Config::Real> m_velocity;
