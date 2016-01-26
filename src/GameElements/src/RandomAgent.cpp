@@ -30,7 +30,8 @@ namespace GameElements
 
 	RandomAgent::RandomAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : SmithAgent(archetype, weaponArchetype, computeCollisionMesh) {
 		m_velocity = randomVelocity() ;
-		_map = new Math::RoadMap();
+		//_map = new Math::RoadMap();
+		OgreFramework::GlobalConfiguration::getCurrentMap()->show();
 	}
 
 	void RandomAgent::update( const Config::Real & dt )
