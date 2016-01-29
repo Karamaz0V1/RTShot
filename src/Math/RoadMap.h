@@ -9,8 +9,9 @@
 namespace Math {
 	class RoadMap {
 		public:
-			RoadMap(Math::Vector2<Config::Real> & targetPosition = Math::Vector2<Config::Real>(), std::vector<Math::Vector2<Config::Real> > & agentsPositions = std::vector<Math::Vector2<Config::Real> >());
+			RoadMap(Math::Vector2<Config::Real> & targetPosition = Math::Vector2<Config::Real>(15.0, 15.0), std::vector<Math::Vector2<Config::Real> > & agentsPositions = std::vector<Math::Vector2<Config::Real> >());
 			virtual ~RoadMap();
+			Math::Vector2<Config::Real> getTargetWay(Math::Vector2<Config::Real> const & worldCoordinates) const;
 
 		private:
 			//std::array<int, 100> _roadMap; // TODO: recreate game map space in array cf. RandomAgent

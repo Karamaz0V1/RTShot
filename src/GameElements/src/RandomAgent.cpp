@@ -38,6 +38,10 @@ namespace GameElements
 	{
 		// Computes movements
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
+		//Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
+		m_velocity = _map->getTargetWay(getPosition().projectZ());
+		cout << "Position : " << getPosition().projectZ() << " Velocité: " << m_velocity << endl;
+
 		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
 
 		std::vector<Triggers::CollisionObject::Pointer> objects = m_perception->perceivedAgents();
