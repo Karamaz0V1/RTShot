@@ -12,7 +12,7 @@ namespace GameElements {
 	SmithAgent::SmithAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : Agent(archetype, weaponArchetype, computeCollisionMesh) {
 	}
 
-	System::MessageEmitter<PickableObject::MovedObjectMessage> * PickableObject::getMovedEmitter()
+	System::MessageEmitter<SmithAgent::MovedObjectMessage> * SmithAgent::getMovedEmitter()
 	{
 		return m_movedEmitter.getInstance() ;
 	}
@@ -22,7 +22,7 @@ namespace GameElements {
 		getMovedEmitter()->send(MovedObjectMessage(*this)) ;
 	}
 
-	void SmithAgent::setdestination()
+	void SmithAgent::setDestination()
 	{
 		::std::cout<<"Destination..."<<::std::endl ;
 	}
@@ -118,5 +118,9 @@ namespace GameElements {
 	Math::Vector2<Config::Real> SmithAgent::getVelocity() const	{
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
 		return m_velocity*(1.0-currentCell.m_speedReduction) ;
+	}
+
+	void SmithAgent::onSelect() {
+		noticeMeSenpai();
 	}
 }

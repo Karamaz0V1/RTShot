@@ -26,6 +26,8 @@ namespace GameElements
 		static DesignPattern::StaticMember<System::MessageEmitter<MovedObjectMessage> > m_movedEmitter;
 	public:
 		static System::MessageEmitter<MovedObjectMessage> * getMovedEmitter();
+		void SmithAgent::setDestination();
+		void SmithAgent::onSelect();
 
 		protected:
 			Math::Vector2<Config::Real> m_velocity;
