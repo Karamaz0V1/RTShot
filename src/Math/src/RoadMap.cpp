@@ -102,4 +102,39 @@ namespace Math
 
 	}
 
+	Vector2<Real> RoadMap::getPositionTowardTarget(Vector2<Real> const & worldCoordinates, const double & agentSpeed, const Real & dt) const {
+		double dist = agentSpeed * dt;
+		const Map * cmap = OgreFramework::GlobalConfiguration::getCurrentMap();
+		Vector2<int> gridCoordinates = cmap->toGridCoordinates(worldCoordinates);
+		
+
+		// TODO: return target when possible
+		// TODO: while dist > 0 : find next best cell; if dist - cellCost > 0 : select cell then iter;
+		if (_map[gridCoordinates] == 1) {
+			cout << "[RoadMap] Normalement t'es arrivé gros." << endl;
+			return Vector2<Real>();
+		}
+
+		Vector2<Real> bestWay;
+		double bestWayScore = _map[gridCoordinates];
+
+		// Shit happens
+		if (bestWayScore == 0) bestWayScore = numeric_limits<double>::max();
+
+		for (int i = -1; i <= 1; i++)
+			for (int j = -1; j <= 1; j++) {
+				if (j == 0 && i == 0) continue;
+				Vector2<int> neighbour(gridCoordinates[0] + i, gridCoordinates[1] + j);
+				if (! _map.isValid(neighbour)) continue;
+				if (_map[neighbour] > bestWayScore) continue;
+				if (_map[neighbour] == bestWayScore && abs(i) == abs(j)) continue;
+				bestWayScore = _map[neighbour];
+				// Todo: set bestWay direction refactor
+				bestWay[0] = i ;//- j * 1.0f / 2;
+				bestWay[1] = j ;//- i * 1.0f / 2;
+			}
+
+		return bestWay.normalized();
+	}
+
 }
