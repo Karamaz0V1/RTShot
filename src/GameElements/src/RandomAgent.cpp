@@ -10,7 +10,6 @@ namespace GameElements
 
 	void RandomAgent::update( const Config::Real & dt )
 	{
-		SmithAgent::update(dt);
 		// Computes movements
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
 		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;

@@ -25,7 +25,6 @@ namespace GameElements {
 		//if(m_collision==true){
 			if (this == agent1.get()){
 				//m_velocity = (getPosition().projectZ() - agent2->getPosition().projectZ()).normalized() * getMaxSpeed();
-				std::cout<<"je détecte la collision"<<std::endl;
 				m_collision=true;
 			}else{		// this == agent2
 				m_collision=true;
@@ -34,7 +33,7 @@ namespace GameElements {
 	}
 
 	SmithAgent::SmithAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : Agent(archetype, weaponArchetype, computeCollisionMesh) {
-	m_collision=false;
+		m_collision=false;
 	}
 
 	Agent::Pointer SmithAgent::selectWeakestAgent(const vector<Agent::Pointer> & agents) const {
