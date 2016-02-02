@@ -26,12 +26,15 @@ namespace GameElements
 		static DesignPattern::StaticMember<System::MessageEmitter<MovedObjectMessage> > m_movedEmitter;
 	public:
 		static System::MessageEmitter<MovedObjectMessage> * getMovedEmitter();
-		void SmithAgent::setDestination();
+		void SmithAgent::setDestination(Math::Vector2<Config::Real> destination);
 		void SmithAgent::onSelect();
 		void SmithAgent::onUnselect();
+		void SmithAgent::setTarget(Ogre::Entity * target);
 
 		protected:
 			Math::Vector2<Config::Real> m_velocity;
+			Math::Vector2<Config::Real> m_destination;
+			Ogre::Entity * m_target;
 
 		protected:
 			virtual Agent::Pointer selectWeakestAgent(const std::vector<Agent::Pointer> & agents) const;

@@ -22,12 +22,19 @@ namespace GameElements {
 		getMovedEmitter()->send(MovedObjectMessage(objet)) ;
 	}
 
-	void SmithAgent::setDestination()
+	void SmithAgent::setDestination(Math::Vector2<Config::Real> destination)
 	{
-		::std::cout<<"Destination..."<<::std::endl ;
+		m_destination = destination;
+		::std::cout<<"Destination..."<<m_destination<<::std::endl ;
+		
 		/*Math::Vector2<Config::Real> newPosition = getPosition().projectZ();
 		setPosition(newPosition.push(getPosition()[2]+1)) ;*/
 		//::std::cout<<getArchetype()->m_name<<::std::endl ;
+	}
+
+	void SmithAgent::setTarget(Ogre::Entity * target) {
+		::std::cout<<"Target is mine"<<::std::endl;
+		m_target = target;
 	}
 
 	Agent::Pointer SmithAgent::selectWeakestAgent(const vector<Agent::Pointer> & agents) const {

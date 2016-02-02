@@ -40,12 +40,19 @@ namespace OgreFramework
 				::std::cout<<"Picking on object: "<<selectedEntity->getName()<<::std::endl ;
 			}
 		}
-		if(m_isActive && id!=m_button) {
-			int x = arg.state.X.abs;
-			int y = arg.state.Y.abs;
-			if(m_lastAgent != NULL)
-				m_lastAgent->setDestination();
-			//::std::cout<<"Moving object: "<<m_lastSelected->getName()<<::std::endl ;
+		if(m_isActive && id==OIS::MB_Right) {
+			if(m_lastAgent != NULL) {
+				int x = arg.state.X.abs;
+				int y = arg.state.Y.abs;
+				Ogre::Ray mouseRay = m_camera->getCameraToViewportRay(x/float(arg.state.width),y/float(arg.state.height));
+				std::pair<bool,Config::Real> result = mouseRay.intersects(Ogre::Plane(Ogre::Vector3(0,0,1), Ogre::Vector3(0,0,0)));
+				Ogre::Real distance = result.second;
+				Ogre::Vector3 position = mouseRay.getPoint(distance);
+				Math::Vector3<Config::Real> posf(position[0], position[1], position[2]);
+				m_lastAgent->setDestination(posf.projectZ());
+				m_lastAgent->setTarget(mSelectionBuffer->OnSelectionClick(x, y));
+
+			}
 		}
 	}
 
