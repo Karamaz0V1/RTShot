@@ -31,6 +31,15 @@ namespace GameElements
 		void SmithAgent::onUnselect();
 		void SmithAgent::setTarget(Ogre::Entity * target);
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// \fn	virtual void NullAgent::onCollision (const CollisionMessage & message);
+			///
+			/// \brief	Executes the collision action.
+			///
+			/// \author	Fabrice Lamarche, university of Rennes 1
+			/// \param	message	The message.
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			virtual void onCollision (const CollisionMessage & message);
 		protected:
 			Math::Vector2<Config::Real> m_velocity;
 			Math::Vector2<Config::Real> m_destination;
@@ -42,6 +51,8 @@ namespace GameElements
 			virtual std::vector<Agent::Pointer> getAgentsListFromObjectsList(const std::vector<Triggers::CollisionObject::Pointer> & objects) const;
 			Math::Vector2<Config::Real> randomVelocity() const;
 			Math::Vector2<Config::Real> getVelocity() const;
+			//refresh collision
+			bool m_collision;
 	};
 }
 #endif
