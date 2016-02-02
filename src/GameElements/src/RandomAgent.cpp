@@ -10,7 +10,7 @@ namespace GameElements
 {
 	void RandomAgent::onCollision( const CollisionMessage & message )
 	{
-		Agent::Pointer agent1 = boost::dynamic_pointer_cast<Agent>(message.m_object1);
+		/*Agent::Pointer agent1 = boost::dynamic_pointer_cast<Agent>(message.m_object1);
 		Agent::Pointer agent2 = boost::dynamic_pointer_cast<Agent>(message.m_object2);
 
 		if(agent1.get() == NULL || agent2.get() == NULL) return;
@@ -18,7 +18,7 @@ namespace GameElements
 		if (m_velocity[0] * m_velocity[0] > m_velocity[1] * m_velocity[1])
 			m_velocity[1] = -m_velocity[1];
 		else
-			m_velocity[0] = -m_velocity[0];
+			m_velocity[0] = -m_velocity[0];*/
 		/*
 		if (this == agent1.get())
 			m_velocity = (agent1->getPosition().projectZ() - agent2->getPosition().projectZ()).normalized() * getMaxSpeed();
@@ -39,10 +39,11 @@ namespace GameElements
 		// Computes movements
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
 		//Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
-		m_velocity = _map->getTargetWay(getPosition().projectZ());
+		cout << "[RandomAgent] Je demande mon chemin" << endl;
+		m_velocity = _map->getTargetWay(getPosition().projectZ()) * m_archetype->m_speed;
 		cout << "Position : " << getPosition().projectZ() << " Velocité: " << m_velocity << endl;
 
-		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
+		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt;//*(1.0-currentCell.m_speedReduction) ;
 
 		std::vector<Triggers::CollisionObject::Pointer> objects = m_perception->perceivedAgents();
 		//for (std::vector<Triggers::CollisionObject::Pointer>::const_iterator it = objects.begin(); it != objects.end(); it++) {
@@ -50,13 +51,13 @@ namespace GameElements
 		//}
 
 		// If displacement is valid, the agent moves, otherwise, a new random velocity is computed
-		if(OgreFramework::GlobalConfiguration::getCurrentMap()->isValid(newPosition) && OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(newPosition).m_speedReduction!=1.0)
-		{
+		//if(OgreFramework::GlobalConfiguration::getCurrentMap()->isValid(newPosition) && OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(newPosition).m_speedReduction!=1.0)
+		//{
 			setOrientation(m_velocity) ;
 			setPosition(newPosition.push(0.0)) ;
-		} else {
-			m_velocity = randomVelocity() ;
-		}
+		//} else {
+		//	//m_velocity = randomVelocity() ;
+		//}
 
 		// Handles perception and fires on agents
 		if(canFire())

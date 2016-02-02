@@ -21,7 +21,7 @@ namespace Math
 		Vector2<int> tposition = cmap->toGridCoordinates(targetPosition);
 		queue<Vector2<int> > cellStack;
 		
-		_map[tposition] = 0;
+		_map[tposition] = 1;
 		cellStack.push(tposition);
 
 		cout << "Map creation : " << cmap->width() << "x" << cmap->height() << "..." << endl;
@@ -29,26 +29,46 @@ namespace Math
 			Vector2<int> cell = cellStack.front();
 			cellStack.pop();
 
+			/*
 			for (int i = -1; i <= 1; i++)
 				for (int j = -1; j <=1; j++) {
 					if (j == 0 && i == 0) continue;
 					Vector2<int> neighbour(cell[0] + i, cell[1] + j);
 					if (! _map.isValid(neighbour)) continue;
-					if (_map[neighbour] != 0) continue;
+					//if (_map[neighbour] > 0) continue;
+					if (_map[neighbour] != 0 && _map[neighbour] < _map[cell] + cmap->getCell(cmap->toWorldCoordinates(neighbour)).m_speedReduction * 10) continue;
 					if (cmap->getCell(cmap->toWorldCoordinates(neighbour)).m_speedReduction == 1) { // impassable
 						// QUICK FIX
-						for (int ii = -3; ii <= 3; ii++)
-							for (int jj = -3; jj <= 3; jj++) {
-								Vector2<int> neighbourMountain(neighbour[0] + ii, neighbour[1] + jj);
-								_map[neighbour] = numeric_limits<unsigned int>::max();
-							}
+						//for (int ii = -3; ii <= 3; ii++)
+						//	for (int jj = -3; jj <= 3; jj++) {
+						//		Vector2<int> neighbourMountain(neighbour[0] + ii, neighbour[1] + jj);
+						//		if (! _map.isValid(neighbourMountain)) continue;
+						//		_map[neighbourMountain] = numeric_limits<unsigned int>::max();
+						//	}
+						_map[neighbour] = numeric_limits<unsigned int>::max();
 						continue;
 					}
 					_map[neighbour] = _map[cell] + cmap->getCell(cmap->toWorldCoordinates(neighbour)).m_speedReduction * 10;
 					//cout << _map[cell] + 1 << " " ;
 					cellStack.push(neighbour);
 				}
+				*/
+			for (int i = -1; i <= 1; i++) {
+				for (int j = -1; j <= 1; j++) {
+					if (j == 0 && i == 0) continue;
+					Vector2<int> neighbour(cell[0] + i, cell[1] + j);
+					if (! _map.isValid(neighbour)) continue;
+					if (_map[neighbour] > 0) continue;
+					if (cmap->getCell(cmap->toWorldCoordinates(neighbour)).m_speedReduction == 1) {
+						_map[neighbour] = numeric_limits<unsigned int>::max();
+						continue;
+					}
+					_map[neighbour] = _map[cell] + 1;
+					cellStack.push(neighbour);
+				}
+			}
 		}
+		//cout << _map << endl;
 		cout << "Done." << endl;
 	}
 
@@ -57,24 +77,45 @@ namespace Math
 	}
 	
 	Vector2<Real> RoadMap::getTargetWay(Vector2<Real> const & worldCoordinates) const {
+		cout << "[RoadMap] On me demande le chemin." << endl;
 		const Map * cmap = OgreFramework::GlobalConfiguration::getCurrentMap();
 		Vector2<int> gridCoordinates = cmap->toGridCoordinates(worldCoordinates);
-		if (_map[gridCoordinates] == 0) return Vector2<Real>();
+		if (_map[gridCoordinates] == 1) {
+			cout << "[RoadMap] Normalement t'es arrivé gros." << endl;
+			return Vector2<Real>();
+		}
 
 		Vector2<Real> bestWay;
 		unsigned int bestWayScore = _map[gridCoordinates];
+
+		// Shit happens
+		if (bestWayScore == 0) bestWayScore = numeric_limits<unsigned int>::max();
 
 		for (int i = -1; i <= 1; i++)
 			for (int j = -1; j <= 1; j++) {
 				if (j == 0 && i == 0) continue;
 				Vector2<int> neighbour(gridCoordinates[0] + i, gridCoordinates[1] + j);
 				if (! _map.isValid(neighbour)) continue;
-				if (_map[neighbour] >= bestWayScore) continue;
+				if (_map[neighbour] > bestWayScore) continue;
+				if (_map[neighbour] == bestWayScore && abs(i) == abs(j)) continue;
 				bestWayScore = _map[neighbour];
 				// Todo: set bestWay direction refactor
 				bestWay[0] = i ;//- j * 1.0f / 2;
 				bestWay[1] = j ;//- i * 1.0f / 2;
 			}
+
+		if (bestWay[0] == 0 && bestWay[1] == 0) {
+			cout << "arrivé ? -------------------------------- " << endl;
+			cout << "case actuelle : " << _map[gridCoordinates] << endl;
+			for (int i = -1; i <= 1; i++)
+				for (int j = -1; j <= 1; j++) {
+					Vector2<int> neighbour(gridCoordinates[0] + i, gridCoordinates[1] + j);
+					cout << "case " << i << " " << j << " : " << _map[neighbour] << endl;
+				}
+			cout << "----------------------------------------- " << endl;
+		} else {
+			cout << "On bouge" << endl;
+		}
 
 		return bestWay.normalized();
 
