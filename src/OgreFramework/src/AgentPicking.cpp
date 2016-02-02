@@ -5,12 +5,13 @@
 
 namespace OgreFramework
 {
-	DesignPattern::StaticMember<System::MessageEmitter<GameElements::SmithAgent::MovedObjectMessage> > AgentPicking::m_movedEmitter ;
+	//DesignPattern::StaticMember<System::MessageEmitter<GameElements::SmithAgent::MovedObjectMessage> > AgentPicking::m_movedEmitter ;
 
-	AgentPicking::AgentPicking( Ogre::RenderWindow *renderWindow, Ogre::SceneManager * sceneManager, Ogre::Camera * camera, OIS::MouseButtonID buttonId ) 
-		: Picking(sceneManager, camera, buttonId),MessageListener<GameElements::SmithAgent::MovedObjectMessage>(m_movedEmitter.getInstance())
+	AgentPicking::AgentPicking( Ogre::RenderWindow *renderWindow, Ogre::SceneManager * sceneManager, Ogre::Camera * camera, OIS::MouseButtonID buttonId, System::MessageEmitter<GameElements::SmithAgent::MovedObjectMessage> * emitter) 
+		: Picking(sceneManager, camera, buttonId),MessageListener<GameElements::SmithAgent::MovedObjectMessage>(emitter)
 	{
 		mSelectionBuffer = new Ogre::SelectionBuffer(sceneManager, camera, renderWindow);
+		m_lastAgent = NULL;
 	}
 
 	GameElements::SmithAgent * AgentPicking::getLastAgent() const
@@ -42,12 +43,14 @@ namespace OgreFramework
 		if(m_isActive && id!=m_button) {
 			int x = arg.state.X.abs;
 			int y = arg.state.Y.abs;
-			m_lastAgent->setDestination();
+			if(m_lastAgent != NULL)
+				m_lastAgent->setDestination();
 			//::std::cout<<"Moving object: "<<m_lastSelected->getName()<<::std::endl ;
 		}
 	}
 
 	void AgentPicking::onMessage(GameElements::SmithAgent::MovedObjectMessage const & msg) {
-		m_lastAgent = &(msg.m_selected);
+		::std::cout<<"Message personnel : la mienne est plus grande que la vôtre"<<::std::endl;
+		m_lastAgent = msg.m_selected;
 	}
 }

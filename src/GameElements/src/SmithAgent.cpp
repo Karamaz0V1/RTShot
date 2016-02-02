@@ -17,14 +17,17 @@ namespace GameElements {
 		return m_movedEmitter.getInstance() ;
 	}
 
-	void SmithAgent::noticeMeSenpai()
+	void SmithAgent::noticeMeSenpai(SmithAgent * objet)
 	{
-		getMovedEmitter()->send(MovedObjectMessage(*this)) ;
+		getMovedEmitter()->send(MovedObjectMessage(objet)) ;
 	}
 
 	void SmithAgent::setDestination()
 	{
 		::std::cout<<"Destination..."<<::std::endl ;
+		/*Math::Vector2<Config::Real> newPosition = getPosition().projectZ();
+		setPosition(newPosition.push(getPosition()[2]+1)) ;*/
+		//::std::cout<<getArchetype()->m_name<<::std::endl ;
 	}
 
 	Agent::Pointer SmithAgent::selectWeakestAgent(const vector<Agent::Pointer> & agents) const {
@@ -81,7 +84,7 @@ namespace GameElements {
 		// If displacement is valid, the agent moves, otherwise, a new random velocity is computed
 		if(OgreFramework::GlobalConfiguration::getCurrentMap()->isValid(newPosition) && OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(newPosition).m_speedReduction!=1.0) {
 			setOrientation(m_velocity) ;
-			setPosition(newPosition.push(0.0)) ;
+			setPosition(newPosition.push(getPosition()[2])) ;
 		} else {
 			m_velocity = randomVelocity() ;
 		}
@@ -121,6 +124,12 @@ namespace GameElements {
 	}
 
 	void SmithAgent::onSelect() {
+		::std::cout<<"OMG Flantier :')"<<::std::endl;
+		noticeMeSenpai(this);
+	}
+
+	void SmithAgent::onUnselect() {
+		::std::cout<<"jpp de ma femme Flantier, LOL"<<::std::endl;
 		noticeMeSenpai();
 	}
 }

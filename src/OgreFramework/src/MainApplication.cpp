@@ -8,6 +8,7 @@
 #include <Ogre/DotSceneLoader.h>
 #include <OgreFramework/PickingSelectionBuffer.h>
 #include <OgreFramework/PickingBoundingBox.h>
+#include <OgreFramework/AgentPicking.h>
 #include <OgreFramework/GeometryLoader.h>
 #include <OgreFramework/GlobalConfiguration.h>
 #include <GameElements/ConfigurationLoader.h>
@@ -98,7 +99,8 @@ namespace OgreFramework
 		}
 		// Setups the picking
 		//m_picking = new PickingBoundingBox(m_sceneManager, m_camera, OIS::MB_Left) ;
-		m_picking = new PickingSelectionBuffer(m_window, m_sceneManager, m_camera, OIS::MB_Left) ;
+		//m_picking = new PickingSelectionBuffer(m_window, m_sceneManager, m_camera, OIS::MB_Left) ;
+		m_picking = new AgentPicking(m_window, m_sceneManager, m_camera, OIS::MB_Left, GameElements::SmithAgent::getMovedEmitter());
 		// Setups the camera control system
 		m_cameraManager = new RTSCameraManager(m_sceneManager, m_camera, &m_keyboardState) ;
 
@@ -112,7 +114,7 @@ namespace OgreFramework
 		types.push_back("MousticR") ;
 		types.push_back("CrocoR") ;
 		types.push_back("HippoR") ;
-		for(int cpt=0 ; cpt<150 ; ++cpt)
+		for(int cpt=0 ; cpt<10 ; ++cpt)
 		{
 			const GameElements::UnitsArchetypes::Archetype * unit = GlobalConfiguration::getConfigurationLoader()->getUnitsArchetypes().get(types[rand()%types.size()]) ;
 			const GameElements::WeaponsArchetypes::Archetype * weapon = GlobalConfiguration::getConfigurationLoader()->getWeaponsArchetypes().get(unit->m_weapon) ;

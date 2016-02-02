@@ -8,16 +8,16 @@
 
 namespace OgreFramework
 {
-	class AgentPicking : Picking, System::MessageListener<GameElements::SmithAgent::MovedObjectMessage>
+	class AgentPicking : public Picking, System::MessageListener<GameElements::SmithAgent::MovedObjectMessage>
 	{
 	protected:
 		GameElements::SmithAgent * m_lastAgent;
 		Ogre::SelectionBuffer * mSelectionBuffer;
-		static DesignPattern::StaticMember<System::MessageEmitter<GameElements::SmithAgent::MovedObjectMessage> > m_movedEmitter ;
+		//static DesignPattern::StaticMember<System::MessageEmitter<GameElements::SmithAgent::MovedObjectMessage> > m_movedEmitter ;
 
 	public:
-		AgentPicking(Ogre::RenderWindow *renderWindow, Ogre::SceneManager * sceneManager, Ogre::Camera * camera, OIS::MouseButtonID buttonId);
-		virtual void update(const OIS::MouseEvent &arg, OIS::MouseButtonID id) = 0 ;
+		AgentPicking(Ogre::RenderWindow *renderWindow, Ogre::SceneManager * sceneManager, Ogre::Camera * camera, OIS::MouseButtonID buttonId, System::MessageEmitter<GameElements::SmithAgent::MovedObjectMessage> * emitter);
+		void update(const OIS::MouseEvent &arg, OIS::MouseButtonID id);
 		GameElements::SmithAgent * getLastAgent() const;
 		void onMessage(GameElements::SmithAgent::MovedObjectMessage const & msg);
 	};

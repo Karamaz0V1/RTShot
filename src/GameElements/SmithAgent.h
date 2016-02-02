@@ -11,16 +11,16 @@ namespace GameElements
 
 			struct MovedObjectMessage
 		{
-			SmithAgent & m_selected;
+			SmithAgent * m_selected;
 
-			MovedObjectMessage(SmithAgent & object)
+			MovedObjectMessage(SmithAgent * object)
 				: m_selected(object)
 			{}
 		};
 
 			SmithAgent(const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh = true);
 			virtual void update(const Config::Real & dt);
-			void noticeMeSenpai();
+			void noticeMeSenpai(SmithAgent * objet = NULL);
 
 	private:
 		static DesignPattern::StaticMember<System::MessageEmitter<MovedObjectMessage> > m_movedEmitter;
@@ -28,6 +28,7 @@ namespace GameElements
 		static System::MessageEmitter<MovedObjectMessage> * getMovedEmitter();
 		void SmithAgent::setDestination();
 		void SmithAgent::onSelect();
+		void SmithAgent::onUnselect();
 
 		protected:
 			Math::Vector2<Config::Real> m_velocity;
