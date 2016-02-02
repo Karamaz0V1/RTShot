@@ -112,7 +112,7 @@ namespace OgreFramework
 		types.push_back("MousticR") ;
 		types.push_back("CrocoR") ;
 		types.push_back("HippoR") ;
-		for(int cpt=0 ; cpt<1 ; ++cpt)
+		for(int cpt=0 ; cpt<10 ; ++cpt)
 		{
 			const GameElements::UnitsArchetypes::Archetype * unit = GlobalConfiguration::getConfigurationLoader()->getUnitsArchetypes().get(types[rand()%types.size()]) ;
 			const GameElements::WeaponsArchetypes::Archetype * weapon = GlobalConfiguration::getConfigurationLoader()->getWeaponsArchetypes().get(unit->m_weapon) ;
