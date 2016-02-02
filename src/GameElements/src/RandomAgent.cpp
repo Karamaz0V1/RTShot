@@ -4,45 +4,13 @@
 
 namespace GameElements
 {
-
-	void RandomAgent::onCollision( const CollisionMessage & message )
-	{
-		
-		Agent::Pointer agent1 = boost::dynamic_pointer_cast<Agent>(message.m_object1);
-		Agent::Pointer agent2 = boost::dynamic_pointer_cast<Agent>(message.m_object2);
-
-		if(agent1.get() == NULL || agent2.get() == NULL) return;
-		/*
-		if (m_velocity[0] * m_velocity[0] > m_velocity[1] * m_velocity[1])
-			m_velocity[1] = -m_velocity[1];
-		else
-			m_velocity[0] = -m_velocity[0];*/
-		if(microsoftRecrute==true){
-			if (this == agent1.get())
-				m_velocity = (agent1->getPosition().projectZ() - agent2->getPosition().projectZ()).normalized() * getMaxSpeed();
-			else		// this == agent2
-				m_velocity = (agent2->getPosition().projectZ() - agent1->getPosition().projectZ()).normalized() * getMaxSpeed();
-		}
-	}
-
-
 	RandomAgent::RandomAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : SmithAgent(archetype, weaponArchetype, computeCollisionMesh) {
 		m_velocity = randomVelocity() ;
-		microsoftRecrute=false;
 	}
 
 	void RandomAgent::update( const Config::Real & dt )
 	{
-		int testCollision = 1;
-		int dtMagie = dt;
-		//Check the collision at each frame
-		if(dtMagie%testCollision==0){
-			microsoftRecrute=true;
-		}else{
-			microsoftRecrute=false;
-		}
-
-
+		SmithAgent::update(dt);
 		// Computes movements
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
 		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
@@ -52,13 +20,18 @@ namespace GameElements
 		//}
 		
 		// If displacement is valid, the agent moves, otherwise, a new random velocity is computed
-		if(OgreFramework::GlobalConfiguration::getCurrentMap()->isValid(newPosition) && OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(newPosition).m_speedReduction!=1.0)
+		if(OgreFramework::GlobalConfiguration::getCurrentMap()->isValid(newPosition) && OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(newPosition).m_speedReduction!=1.0 && m_collision == false)
 		{
 			setOrientation(m_velocity) ;
 			setPosition(newPosition.push(0.0)) ;
-		} else {
+		}else if(m_collision==true){
+			newPosition = getPosition().projectZ()+m_velocity.rotate90()*dt*(1.0-currentCell.m_speedReduction) ;
+			setPosition(newPosition.push(0.0)) ;
+		}else {
 			m_velocity = randomVelocity() ;
 		}
+
+		m_collision = false;
 		// Handles perception and fires on agents
 		if(canFire())
 		{

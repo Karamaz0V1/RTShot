@@ -21,20 +21,9 @@ namespace GameElements
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		virtual void update(const Config::Real & dt);
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// \fn	virtual void NullAgent::onCollision (const CollisionMessage & message);
-		///
-		/// \brief	Executes the collision action.
-		///
-		/// \author	Fabrice Lamarche, university of Rennes 1
-		/// \param	message	The message.
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		virtual void onCollision (const CollisionMessage & message);
+		
 
 		Map::GroundCellDescription findEnemyCell() const;
-	protected:
-		//refresh collision
-			bool microsoftRecrute;
 	};
 }
 
