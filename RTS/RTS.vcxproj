@@ -278,7 +278,6 @@ echo "Done"
     <ClInclude Include="..\src\Ext\Ogre\NodeManipulation.h" />
     <ClInclude Include="..\src\Ext\std\string_utils.h" />
     <ClInclude Include="..\src\Ext\TinyXML\Helpers.h" />
-    <ClInclude Include="..\src\GameElements\AgentMovement.h" />
     <ClInclude Include="..\src\GameElements\aEtoile.h" />
     <ClInclude Include="..\src\GameElements\ComputerAgent.h" />
     <ClInclude Include="..\src\GameElements\HumanAgent.h" />
@@ -360,7 +359,6 @@ echo "Done"
     <ClCompile Include="..\src\Ext\Ogre\src\ComputeBoundingBox.cpp" />
     <ClCompile Include="..\src\Ext\Ogre\src\NodeManipulation.cpp" />
     <ClCompile Include="..\src\Ext\std\src\string_utils.cpp" />
-    <ClCompile Include="..\src\GameElements\src\AgentMovement.cpp" />
     <ClCompile Include="..\src\GameElements\src\aEtoile.cpp" />
     <ClCompile Include="..\src\GameElements\src\ComputerAgent.cpp" />
     <ClCompile Include="..\src\GameElements\src\HumanAgent.cpp" />

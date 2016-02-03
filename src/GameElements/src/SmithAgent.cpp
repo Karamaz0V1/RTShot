@@ -46,19 +46,12 @@ namespace GameElements {
 		getMovedEmitter()->send(MovedObjectMessage(objet)) ;
 	}
 
-	void SmithAgent::setDestination(Math::Vector2<Config::Real> destination)
-	{
-		m_destination = destination;
-		::std::cout<<"Destination..."<<m_destination<<::std::endl ;
-		
-		/*Math::Vector2<Config::Real> newPosition = getPosition().projectZ();
-		setPosition(newPosition.push(getPosition()[2]+1)) ;*/
-		//::std::cout<<getArchetype()->m_name<<::std::endl ;
-	}
-
 	void SmithAgent::setTarget(Ogre::Entity * target) {
 		::std::cout<<"Target is mine"<<::std::endl;
-		m_target = target;
+		Agent agent;
+		//TODO passer de l'entité à l'agent
+		if(agent->getArchetype()->m_name.back() != this->getArchetype()->m_name.back())
+			m_target = target;
 	}
 
 	Agent::Pointer SmithAgent::selectWeakestAgent(const vector<Agent::Pointer> & agents) const {
@@ -163,5 +156,9 @@ namespace GameElements {
 	void SmithAgent::onUnselect() {
 		::std::cout<<"jpp de ma femme Flantier, LOL"<<::std::endl;
 		noticeMeSenpai();
+	}
+
+	void SmithAgent::go2(Math::Vector2<Config::Real> destination) {
+		::std::cout<<"Destination..."<<destination<<::std::endl ;
 	}
 }

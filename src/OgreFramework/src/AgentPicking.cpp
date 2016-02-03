@@ -49,9 +49,12 @@ namespace OgreFramework
 				Ogre::Real distance = result.second;
 				Ogre::Vector3 position = mouseRay.getPoint(distance);
 				Math::Vector3<Config::Real> posf(position[0], position[1], position[2]);
-				m_lastAgent->setDestination(posf.projectZ());
-				m_lastAgent->setTarget(mSelectionBuffer->OnSelectionClick(x, y));
-
+				m_lastAgent->go2(posf.projectZ());
+				Ogre::Entity * laink = mSelectionBuffer->OnSelectionClick(x, y);
+				if(laink != 0 && laink != m_lastSelected) {
+					if(laink->getName() != "scene0Box001")
+						m_lastAgent->setTarget(laink);
+				}
 			}
 		}
 	}
