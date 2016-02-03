@@ -22,7 +22,7 @@ namespace Math
 		_map[tposition] = 1;
 		cellStack.push(tposition);
 
-		cout << "Map creation : " << cmap->width() << "x" << cmap->height() << "..." << endl;
+		cout << "[RoadMap] Map creation : " << cmap->width() << "x" << cmap->height() << "..." << endl;
 		while (! cellStack.empty()) {
 			Vector2<int> cell = cellStack.front();
 			cellStack.pop();
@@ -50,7 +50,7 @@ namespace Math
 			}
 		}
 
-		cout << "Done." << endl;
+		cout << "[RoadMap] Done." << endl;
 	}
 
 	RoadMap::~RoadMap() {
@@ -102,8 +102,9 @@ namespace Math
 
 	}
 
-	Math::Vector2<Config::Real> RoadMap::getPositionTowardTarget(Math::Vector2<Config::Real> & velocity, const Math::Vector2<Config::Real> const & worldCoordinates, const double & agentSpeed, const Config::Real & dt) const {
-		double maxdist = agentSpeed * dt;
+	Math::Vector2<Config::Real> RoadMap::getPositionTowardTarget(Math::Vector2<Config::Real> & velocity, const Math::Vector2<Config::Real> const & worldCoordinates, const double & agentSpeed, const Config::Real & dt) const {		
+		double maxdist = agentSpeed * dt * 10;
+		cout << "[RoadMap] [getPosition] Distance autorisée : " << maxdist << endl;
 		const Map * cmap = OgreFramework::GlobalConfiguration::getCurrentMap();
 		Vector2<int> gridCoordinates = cmap->toGridCoordinates(worldCoordinates);
 		
@@ -119,10 +120,10 @@ namespace Math
 
 			if (_map[newGridCoordinates] == 1) {
 				cout << "[RoadMap] Normalement t'es arrivé gros." << endl;
-				Vector2<int> ivelocity(newGridCoordinates - gridCoordinates);
-				velocity[0] = ivelocity[0];
-				velocity[1] = ivelocity[1];
-				velocity = velocity.normalized();
+				//Vector2<int> ivelocity(newGridCoordinates - gridCoordinates);
+				//velocity[0] = ivelocity[0];
+				//velocity[1] = ivelocity[1];
+				//velocity = velocity.normalized();
 				return cmap->toWorldCoordinates(newGridCoordinates);
 			}
 
@@ -143,20 +144,27 @@ namespace Math
 					bestNeighbour = neighbour;
 				}
 
+			cout << "[RoadMap] [getPosition] Distance actuelle : " << dist << " voisin selectionné : " << bestNeighbour << endl;
 			if (dist + _map[newGridCoordinates] - _map[bestNeighbour] <= maxdist) {
-				newGridCoordinates += bestNeighbour;
-				dist +=  _map[newGridCoordinates] - _map[bestNeighbour];
+				dist += _map[newGridCoordinates] - _map[bestNeighbour];
+				newGridCoordinates = bestNeighbour;
 			} else {
 				pathfind = true;
 			}
 
 		}
 
+		cout << "[RoadMap] [getPosition] ----- Recap -----  " << endl;
+		cout << "Distance uutorisée : " << maxdist << endl;
+		cout << "Distance parcourue : " << dist << endl;
+		cout << "Case de départ : " <<  gridCoordinates << endl;
+		cout << "Case d'arrivée : " << newGridCoordinates << endl;
+		cout << "------------------------------------------ " << endl;
 		//cout << "[RoadMap] Normalement t'es arrivé gros." << endl;
-		Vector2<int> ivelocity(newGridCoordinates - gridCoordinates);
-		velocity[0] = ivelocity[0];
-		velocity[1] = ivelocity[1];
-		velocity = velocity.normalized();
+		//Vector2<int> ivelocity(newGridCoordinates - gridCoordinates);
+		//velocity[0] = ivelocity[0];
+		//velocity[1] = ivelocity[1];
+		//velocity = velocity.normalized();
 		return cmap->toWorldCoordinates(newGridCoordinates);
 	}
 

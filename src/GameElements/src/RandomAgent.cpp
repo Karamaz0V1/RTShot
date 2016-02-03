@@ -40,11 +40,11 @@ namespace GameElements
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
 		//Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
 		//cout << "[RandomAgent] Je demande mon chemin" << endl;
-		//m_velocity = _map->getTargetWay(getPosition().projectZ()) * m_archetype->m_speed;
+		m_velocity = _map->getTargetWay(getPosition().projectZ()) * m_archetype->m_speed;
 		//cout << "Position : " << getPosition().projectZ() << " Velocité: " << m_velocity << endl;
 
-		//Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt;//*(1.0-currentCell.m_speedReduction) ;
-		Math::Vector2<Config::Real> newPosition = _map->getPositionTowardTarget(m_velocity, getPosition().projectZ(), m_archetype->m_speed, dt);
+		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt;//*(1.0-currentCell.m_speedReduction) ;
+		//Math::Vector2<Config::Real> newPosition = _map->getPositionTowardTarget(m_velocity, getPosition().projectZ(), m_archetype->m_speed, dt);
 
 		std::vector<Triggers::CollisionObject::Pointer> objects = m_perception->perceivedAgents();
 		//for (std::vector<Triggers::CollisionObject::Pointer>::const_iterator it = objects.begin(); it != objects.end(); it++) {
