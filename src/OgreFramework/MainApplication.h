@@ -134,6 +134,8 @@ namespace OgreFramework
 		///< The camera manager
 		RTSCameraManager * m_cameraManager ;
 
+		bool startGame;
+		bool pause;
 		//Ogre::SceneNode * m_shipShape ;
 		//GameElements::NullAgent::Pointer m_entityAdapter ;
 	};

@@ -453,9 +453,6 @@
     <ClCompile Include="..\src\Ogre\src\collectEntities.cpp">
       <Filter>Ogre\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\GameElements\src\AgentMovement.cpp">
-      <Filter>GameElements\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\GameElements\src\aEtoile.cpp">
       <Filter>GameElements\src</Filter>
     </ClCompile>

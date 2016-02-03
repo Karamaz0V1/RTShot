@@ -25,6 +25,8 @@ namespace OgreFramework
 	MainApplication::MainApplication()
 		: m_keyboardState(*KeyboardState::getInstance())
 	{
+		startGame = false;
+		pause=true;
 	}
 
 	MainApplication::~MainApplication()
@@ -178,8 +180,16 @@ namespace OgreFramework
 		// Updates camera manager
 		m_cameraManager->update(dt) ;
 		// Updates (animation, behavoir & son on) are called here :)
-		GlobalConfiguration::getController()->update(dt) ;
+		if(startGame==true	&& pause == false){
+			GlobalConfiguration::getController()->update(dt) ;
+		}
 
+		if(m_keyboardState.isDown(OIS::KC_SPACE)){
+			startGame=true;
+		}
+		if(m_keyboardState.isDown(OIS::KC_SPACE)){
+			pause=!pause;
+		}
 		//static bool explosionFired = false ;
 		//if(absoluteTime>10.0 && !explosionFired)
 		//{
