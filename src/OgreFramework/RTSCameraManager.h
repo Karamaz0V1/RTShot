@@ -101,7 +101,7 @@ namespace OgreFramework
 		///
 		/// \param	dt	The dt.
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		void update(Ogre::Real dt);
+		void update(Ogre::Real dt, bool cine, bool playPacman);
 	};
 }
 
