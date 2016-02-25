@@ -48,7 +48,7 @@ namespace GameElements {
 
 	void SmithAgent::setTarget(Ogre::Entity * target) {
 		::std::cout<<"Target is mine"<<::std::endl;
-		Agent agent;
+		Agent * agent;
 		//TODO passer de l'entité à l'agent
 		if(agent->getArchetype()->m_name.back() != this->getArchetype()->m_name.back())
 			m_target = target;
