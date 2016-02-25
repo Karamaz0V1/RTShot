@@ -1,31 +1,45 @@
 #include <stdafx.h>
 #include <GameElements/RandomAgent.h>
 #include <GameElements/BulletBase.h>
+#include <Math/RoadMap.h>
+
+using std::cout;
+using std::endl;
 
 namespace GameElements
 {
-
 	RandomAgent::RandomAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : SmithAgent(archetype, weaponArchetype, computeCollisionMesh) {
 		m_velocity = randomVelocity() ;
+		_map = new Math::RoadMap();
+		OgreFramework::GlobalConfiguration::getCurrentMap()->show();
 	}
 
 	void RandomAgent::update( const Config::Real & dt )
 	{
+		if (dt == 0) return;
 		// Computes movements
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
-		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
+		//Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
+		//cout << "[RandomAgent] Je demande mon chemin" << endl;
+		m_velocity = _map->getTargetWay(getPosition().projectZ(), m_archetype->m_speed * dt) * m_archetype->m_speed;
+		//cout << "Position : " << getPosition().projectZ() << " Velocité: " << m_velocity << endl;
+
+		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*((1.0-currentCell.m_speedReduction) + (currentCell.m_speedReduction==1));
+		//Math::Vector2<Config::Real> newPosition = _map->getPositionTowardTarget(m_velocity, getPosition().projectZ(), m_archetype->m_speed, dt);
+
 		std::vector<Triggers::CollisionObject::Pointer> objects = m_perception->perceivedAgents();
 		//for (std::vector<Triggers::CollisionObject::Pointer>::const_iterator it = objects.begin(); it != objects.end(); it++) {
 			//(*it)->
 		//}
 		
 		// If displacement is valid, the agent moves, otherwise, a new random velocity is computed
+
 		if(OgreFramework::GlobalConfiguration::getCurrentMap()->isValid(newPosition) && OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(newPosition).m_speedReduction!=1.0 && m_collision == false)
 		{
 			setOrientation(m_velocity) ;
 			setPosition(newPosition.push(0.0)) ;
 		}else if(m_collision==true){
-			newPosition = getPosition().projectZ()+m_velocity.rotate90()*dt*(1.0-currentCell.m_speedReduction) ;
+			newPosition = getPosition().projectZ()+m_velocity.rotate90()*dt*((1.0-currentCell.m_speedReduction) + (currentCell.m_speedReduction==1));
 			setPosition(newPosition.push(0.0)) ;
 		}else {
 			m_velocity = randomVelocity() ;

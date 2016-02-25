@@ -294,11 +294,13 @@ namespace OgreFramework
 
 		//now it's time to see how you die, remember the death is not the end, but only a transition
 		//std::cout<<agentBlackBox.size()<<"\n";
+		/*
 		for (int i = 0;i<agentBlackBox.size();i++){
 			if(agentBlackBox[i]->isDead()){
 				std::cout<<"je suis nul"<<std::endl;
 			}
 		}
+		//*/
 		/*int teamPlayer=0;
 		int teamIA=0;
 		for (int i = 0;i<agentBlackBox.size();i++){
