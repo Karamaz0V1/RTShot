@@ -67,6 +67,9 @@
     <Filter Include="Ext\boost">
       <UniqueIdentifier>{779c0ec0-a962-450f-bf6b-1151af191457}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math\src">
+      <UniqueIdentifier>{4b8297bb-0942-441d-ae67-254b9b244f72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\System\ActiveObject.h">
@@ -304,8 +307,8 @@
     <ClInclude Include="..\src\GameElements\ComputerAgent.h">
       <Filter>GameElements</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\GameElements\dijkstra.h">
-      <Filter>GameElements</Filter>
+    <ClInclude Include="..\src\Math\RoadMap.h">
+      <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="..\src\OgreFramework\AgentPicking.h">
       <Filter>OgreFramework</Filter>
@@ -462,8 +465,8 @@
     <ClCompile Include="..\src\GameElements\src\ComputerAgent.cpp">
       <Filter>GameElements\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\GameElements\src\dijkstra.cpp">
-      <Filter>GameElements\src</Filter>
+    <ClCompile Include="..\src\Math\src\RoadMap.cpp">
+      <Filter>Math\src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\OgreFramework\src\AgentPicking.cpp">
       <Filter>OgreFramework\src</Filter>

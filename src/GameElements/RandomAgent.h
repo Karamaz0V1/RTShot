@@ -1,6 +1,7 @@
 #ifndef _GameElements_RandomAgent_H
 #define _GameElements_RandomAgent_H
 #include <GameElements/SmithAgent.h>
+#include <Math/RoadMap.h>
 
 namespace GameElements
 {
@@ -23,6 +24,9 @@ namespace GameElements
 		
 
 		Map::GroundCellDescription findEnemyCell() const;
+	private:
+		Math::RoadMap * _map;
+
 	};
 }
 

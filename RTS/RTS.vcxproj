@@ -285,7 +285,6 @@ echo "Done"
     <ClInclude Include="..\src\GameElements\BallisticBullet.h" />
     <ClInclude Include="..\src\GameElements\BulletBase.h" />
     <ClInclude Include="..\src\GameElements\ConfigurationLoader.h" />
-    <ClInclude Include="..\src\GameElements\dijkstra.h" />
     <ClInclude Include="..\src\GameElements\Map.h" />
     <ClInclude Include="..\src\GameElements\NullAgent.h" />
     <ClInclude Include="..\src\GameElements\Perception.h" />
@@ -295,6 +294,7 @@ echo "Done"
     <ClInclude Include="..\src\GameElements\UnitsArchetypes.h" />
     <ClInclude Include="..\src\GameElements\Weapon.h" />
     <ClInclude Include="..\src\GameElements\WeaponsArchetypes.h" />
+    <ClInclude Include="..\src\Math\RoadMap.h" />
     <ClInclude Include="..\src\OgreFramework\AgentPicking.h" />
     <ClInclude Include="..\src\OgreFramework\GlobalConfiguration.h" />
     <ClInclude Include="..\src\Ogre\CollectEntities.h" />
@@ -366,7 +366,6 @@ echo "Done"
     <ClCompile Include="..\src\GameElements\src\BallisticBullet.cpp" />
     <ClCompile Include="..\src\GameElements\src\BulletBase.cpp" />
     <ClCompile Include="..\src\GameElements\src\ConfigurationLoader.cpp" />
-    <ClCompile Include="..\src\GameElements\src\dijkstra.cpp" />
     <ClCompile Include="..\src\GameElements\src\Map.cpp" />
     <ClCompile Include="..\src\GameElements\src\NullAgent.cpp" />
     <ClCompile Include="..\src\GameElements\src\Perception.cpp" />
@@ -376,6 +375,7 @@ echo "Done"
     <ClCompile Include="..\src\GameElements\src\UnitsArchetypes.cpp" />
     <ClCompile Include="..\src\GameElements\src\Weapon.cpp" />
     <ClCompile Include="..\src\GameElements\src\WeaponsArchetypes.cpp" />
+    <ClCompile Include="..\src\Math\src\RoadMap.cpp" />
     <ClCompile Include="..\src\OgreFramework\src\AgentPicking.cpp" />
     <ClCompile Include="..\src\OgreFramework\src\GlobalConfiguration.cpp" />
     <ClCompile Include="..\src\Ogre\src\collectEntities.cpp" />
