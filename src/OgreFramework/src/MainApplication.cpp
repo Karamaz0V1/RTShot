@@ -26,7 +26,13 @@ namespace OgreFramework
 		: m_keyboardState(*KeyboardState::getInstance())
 	{
 		startGame = false;
-		pause=true;
+		playPac = true;
+		loaded = false;
+		isclicked=false;
+		
+		gameOver=false;
+		playerWon=true;
+		
 	}
 
 	MainApplication::~MainApplication()
@@ -87,17 +93,20 @@ namespace OgreFramework
 		
 		{
 			Ogre::StringVector tmp ;
-			tmp.push_back("item 1") ;
-			tmp.push_back("item 2") ;
-			tmp.push_back("item 3") ;
-			OgreBites::SelectMenu * menu1 = m_trayManager->createThickSelectMenu(OgreBites::TL_TOPLEFT, "Menu 1", "Foo", 200, 10, tmp) ;
+			tmp.push_back("5") ;
+			tmp.push_back("10") ;
+			tmp.push_back("20") ;
+			OgreBites::SelectMenu * menu1 = m_trayManager->createThickSelectMenu(OgreBites::TL_TOPLEFT, "Menu", "Number Units", 200, 10, tmp) ;
 		}
+
 		{
-			Ogre::StringVector tmp ;
-			tmp.push_back("item 1") ;
-			tmp.push_back("item 2") ;
-			tmp.push_back("item 3") ;
-			OgreBites::SelectMenu * menu1 = m_trayManager->createThickSelectMenu(OgreBites::TL_TOPLEFT, "Menu 2", "Foo 2", 200, 10, tmp) ;
+			OgreBites::Button * but = m_trayManager->createButton(OgreBites::TL_TOPLEFT, "But", "Select", 200) ;
+		}
+
+		{
+			Ogre::DisplayString cap1 = "Bienvenue dans RTShot\n Selectionnez le nombre d'unite que vous desirez controler dans le menu en haut a droite puis cliquer sur le bouton en dessous pour les charger\n\nespace pour lancer la partie";
+			OgreBites::TextBox * text = m_trayManager->createTextBox(OgreBites::TL_CENTER,"txt1","RTShot",300,400);
+			text->appendText(cap1);
 		}
 		// Setups the picking
 		//m_picking = new PickingBoundingBox(m_sceneManager, m_camera, OIS::MB_Left) ;
@@ -109,21 +118,7 @@ namespace OgreFramework
 		// ----------------------------------------
 		// Creates two entities for testing purpose
 		// ----------------------------------------
-		::std::vector<::std::string> types ;
-		types.push_back("MousticB") ;
-		types.push_back("CrocoB") ;
-		types.push_back("HippoB") ;
-		types.push_back("MousticR") ;
-		types.push_back("CrocoR") ;
-		types.push_back("HippoR") ;
-		for(int cpt=0 ; cpt<10 ; ++cpt)
-		{
-			const GameElements::UnitsArchetypes::Archetype * unit = GlobalConfiguration::getConfigurationLoader()->getUnitsArchetypes().get(types[rand()%types.size()]) ;
-			const GameElements::WeaponsArchetypes::Archetype * weapon = GlobalConfiguration::getConfigurationLoader()->getWeaponsArchetypes().get(unit->m_weapon) ;
-			if(weapon==NULL) { ::std::cout<<"HippoB: bad weapon!" ; char c ; ::std::cin>>c ; }
-			GameElements::RandomAgent::Pointer m_entityAdapter = new GameElements::RandomAgent(unit, weapon) ;
-			m_entityAdapter->setPosition(GlobalConfiguration::getCurrentMap()->toWorldCoordinates(GlobalConfiguration::getCurrentMap()->findFreeLocation()).push(0.0)) ;
-		}
+		
 		//m_entityAdapter = new GameElements::NullAgent(configurationLoader.getUnitsArchetypes().get("HippoB"), configurationLoader.getWeaponsArchetypes().get()) ;
 
 		// Test pour vérifier la correspondance carte <-> représentation graphique
@@ -142,13 +137,101 @@ namespace OgreFramework
 		//	}
 	}
 
+	void MainApplication::loadUnits(int a,::std::vector<::std::string> types,int b){
+
+		for(int cpt=0 ; cpt<a ; ++cpt)
+		{
+			const GameElements::UnitsArchetypes::Archetype * unit = GlobalConfiguration::getConfigurationLoader()->getUnitsArchetypes().get(types[b]) ;
+			const GameElements::WeaponsArchetypes::Archetype * weapon = GlobalConfiguration::getConfigurationLoader()->getWeaponsArchetypes().get(unit->m_weapon) ;
+
+			if(weapon==NULL) { ::std::cout<<"HippoB: bad weapon!" ; char c ; ::std::cin>>c ; }			
+			GameElements::RandomAgent * anderson = new GameElements::RandomAgent(unit, weapon);
+			agentBlackBox.push_back(anderson);
+			GameElements::RandomAgent::Pointer m_entityAdapter = anderson ;
+			m_entityAdapter->setPosition(GlobalConfiguration::getCurrentMap()->toWorldCoordinates(GlobalConfiguration::getCurrentMap()->findFreeLocation()).push(0.0)) ;
+		}
+	}
+
 	void MainApplication::update(Ogre::Real dt)
 	{
 		// Necessary for GUI...
-		m_trayManager->adjustTrays() ;
+
+		if(startGame==false){
+			::std::vector<::std::string> types ;
+			
+
+			if((((OgreBites::Button*)m_trayManager->getWidget(OgreBites::TL_TOPLEFT,"But"))->getState()==OgreBites::BS_DOWN)&&(isclicked==false))
+			{
+				loaded=false;
+				isclicked=true;
+			}
+
+			if(((OgreBites::SelectMenu*)m_trayManager->getWidget(OgreBites::TL_TOPLEFT,"Menu"))->isExpanded())
+			{
+				isclicked=false;
+			}
+
+			if(!loaded){
+				
+				if(agentBlackBox.size()!=0){
+					int b=agentBlackBox.size()-1;
+					for (int i=b;i>-1;i--){
+						GameElements::RandomAgent * a = agentBlackBox[i];
+						agentBlackBox.pop_back();
+						a->destroy();
+					}
+					agentBlackBox.clear();
+				}
+				
+				
+
+				types.push_back("MousticB") ;
+				types.push_back("CrocoB") ;
+				types.push_back("HippoB") ;
+				types.push_back("MousticR") ;
+				types.push_back("CrocoR") ;
+				types.push_back("HippoR") ;
+				std::string p = ((OgreBites::SelectMenu*)m_trayManager->getWidget(OgreBites::TL_TOPLEFT,"Menu"))->getSelectedItem();
+
+				switch (std::stoi(p)){
+					case 5:
+						loadUnits(2,types,0);
+						loadUnits(2,types,1);
+						loadUnits(1,types,2);
+						loadUnits(2,types,3);
+						loadUnits(2,types,4);
+						loadUnits(1,types,5);
+
+						break;
+					case 10:
+						
+						loadUnits(4,types,0);
+						loadUnits(4,types,1);
+						loadUnits(2,types,2);
+						loadUnits(4,types,3);
+						loadUnits(4,types,4);
+						loadUnits(2,types,5);
+						break;
+
+					case 20:
+						
+						loadUnits(8,types,0);
+						loadUnits(8,types,1);
+						loadUnits(4,types,2);
+						loadUnits(8,types,3);
+						loadUnits(8,types,4);
+						loadUnits(4,types,5);
+						break;
+				}
+				
+				loaded=true;
+			}
+		}
+		
 		//dt = ::std::min(dt,0.01f) ;
 		static double time = 0 ;
 		time += dt ;
+
 		//if(time>4)
 		//{
 		//	for(float cpt=-3 ; cpt<3 ; cpt+=0.6)
@@ -178,18 +261,20 @@ namespace OgreFramework
 		//m_entityAdapter->setOrientation(0.0,0.0,absoluteTime) ;
 
 		// Updates camera manager
-		m_cameraManager->update(dt) ;
+		m_cameraManager->update(dt,!startGame,playPac) ;
+		playPac=false;
 		// Updates (animation, behavoir & son on) are called here :)
-		if(startGame==true	&& pause == false){
+		if(startGame==true){
 			GlobalConfiguration::getController()->update(dt) ;
 		}
 
-		if(m_keyboardState.isDown(OIS::KC_SPACE)){
+		if(m_keyboardState.isDown(OIS::KC_SPACE)&&startGame==false){
 			startGame=true;
+			m_trayManager->hideTrays();
+			//m_trayManager->destroyWidget("Menu");
+			//m_trayManager->destroyWidget("Select");
 		}
-		if(m_keyboardState.isDown(OIS::KC_SPACE)){
-			pause=!pause;
-		}
+		
 		//static bool explosionFired = false ;
 		//if(absoluteTime>10.0 && !explosionFired)
 		//{
@@ -204,6 +289,43 @@ namespace OgreFramework
 		//	// attach the particle system to a scene node
 		//	getRootSceneNode()->attachObject(particleSystem);
 		//}
+
+
+
+		//now it's time to see how you die, remember the death is not the end, but only a transition
+		//std::cout<<agentBlackBox.size()<<"\n";
+		for (int i = 0;i<agentBlackBox.size();i++){
+			if(agentBlackBox[i]->isDead()){
+				std::cout<<"je suis nul"<<std::endl;
+			}
+		}
+		/*int teamPlayer=0;
+		int teamIA=0;
+		for (int i = 0;i<agentBlackBox.size();i++){
+			std::string sMoi = agentBlackBox[i]->getArchetype()->m_name;
+			char monType = sMoi.back();
+			if(monType=='R'){
+				teamPlayer++;
+			}else{
+				teamIA++;
+			}
+		}
+
+		if(teamPlayer==0){
+			gameOver=true;
+			playerWon=false;
+		}else if(teamIA==0){
+			gameOver=true;
+			playerWon=true;
+		}
+
+		if(gameOver==true){
+			if(playerWon){
+				m_trayManager->showAll();
+			}else{
+				m_trayManager->showAll();
+			}
+		}*/
 	}
 
 	bool MainApplication::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
@@ -235,6 +357,8 @@ namespace OgreFramework
 		BaseApplication::keyReleased(arg) ;
 		return true ;
 	}
+
+
 }
 
 

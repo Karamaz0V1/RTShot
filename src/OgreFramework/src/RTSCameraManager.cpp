@@ -1,6 +1,8 @@
 #include <stdafx.h>
 
 #include <OgreFramework/RTSCameraManager.h>
+#include <OgreFramework/GlobalConfiguration.h>
+
 
 namespace OgreFramework
 {
@@ -36,15 +38,22 @@ namespace OgreFramework
 		m_configuration[controlKey] = key ;
 	}
 
-	void RTSCameraManager::update( Ogre::Real dt )
+	void RTSCameraManager::update( Ogre::Real dt , bool cine, bool playPacman)
 	{
-		// Updates camera mode accordingly to keyboard state
-		if(m_keyboardState->isDown(OIS::KC_UP)) m_cameraMode->goUp(dt) ;
-		if(m_keyboardState->isDown(OIS::KC_DOWN)) m_cameraMode->goDown(dt) ;
-		if(m_keyboardState->isDown(OIS::KC_LEFT)) m_cameraMode->goLeft(dt) ;
-		if(m_keyboardState->isDown(OIS::KC_RIGHT)) m_cameraMode->goRight(dt) ;
-		if(m_keyboardState->isDown(OIS::KC_PGUP)) m_cameraMode->zoomIn(dt) ;
-		if(m_keyboardState->isDown(OIS::KC_PGDOWN)) m_cameraMode->zoomOut(dt) ;
+		if(cine){
+			if(playPacman){
+				OgreFramework::GlobalConfiguration::playSound("../data/sound/pacman.wav");
+			}
+			m_cameraMode->zoomOut(dt);
+		}else{
+			// Updates camera mode accordingly to keyboard state
+			if(m_keyboardState->isDown(OIS::KC_UP)) m_cameraMode->goUp(dt) ;
+			if(m_keyboardState->isDown(OIS::KC_DOWN)) m_cameraMode->goDown(dt) ;
+			if(m_keyboardState->isDown(OIS::KC_LEFT)) m_cameraMode->goLeft(dt) ;
+			if(m_keyboardState->isDown(OIS::KC_RIGHT)) m_cameraMode->goRight(dt) ;
+			if(m_keyboardState->isDown(OIS::KC_PGUP)) m_cameraMode->zoomIn(dt) ;
+			if(m_keyboardState->isDown(OIS::KC_PGDOWN)) m_cameraMode->zoomOut(dt) ;
+		}
 		// Updates camera control system 
 		m_cameraControlSystem->update(dt) ;
 	}

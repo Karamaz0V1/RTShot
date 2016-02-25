@@ -12,6 +12,24 @@
 #include <OgreFramework/EntityAdapter.h>
 #include <GameElements/NullAgent.h>
 
+#include <OGRE/OgreRay.h>
+#include <OGRE/OgreSceneQuery.h>
+#include <OgreFramework/EntityAdapter.h>
+#include <Ogre/DotSceneLoader.h>
+#include <OgreFramework/PickingSelectionBuffer.h>
+#include <OgreFramework/PickingBoundingBox.h>
+#include <OgreFramework/AgentPicking.h>
+#include <OgreFramework/GeometryLoader.h>
+#include <OgreFramework/GlobalConfiguration.h>
+#include <GameElements/ConfigurationLoader.h>
+#include <GameElements/NullAgent.h>
+#include <GameElements/Bullet.h>
+#include <GameElements/StraightBullet.h>
+#include <GameElements/BallisticBullet.h>
+#include <Ext/Ogre/ComputeBoundingBox.h>
+#include <Triggers/BasicCollisionDetector.h>
+#include <GameElements/RandomAgent.h>
+
 namespace OgreFramework
 {
 	///////////////////////////////////////////////////////////////////////////////////
@@ -60,6 +78,14 @@ namespace OgreFramework
 		///////////////////////////////////////////////////////////////////////////////////
 		virtual void createScene(void);
 
+		///////////////////////////////////////////////////////////////////////////////////
+		/// \brief Called when the scene is updated.
+		/// 
+		/// \param dt Time elapsed since last call
+		/// 
+		/// \author F. Lamarche, University of Rennes 1.
+		///////////////////////////////////////////////////////////////////////////////////
+		void loadUnits(int,::std::vector<::std::string>,int);
 		///////////////////////////////////////////////////////////////////////////////////
 		/// \brief Called when the scene is updated.
 		/// 
@@ -133,9 +159,16 @@ namespace OgreFramework
 		KeyboardState & m_keyboardState ;
 		///< The camera manager
 		RTSCameraManager * m_cameraManager ;
-
+		
 		bool startGame;
-		bool pause;
+		bool gameOver;
+		bool playerWon;
+		bool playPac;
+		bool loaded;
+		bool isclicked;
+		OgreBites::SelectMenu * menu1;
+		std::vector<GameElements::RandomAgent *> agentBlackBox ;
+		
 		//Ogre::SceneNode * m_shipShape ;
 		//GameElements::NullAgent::Pointer m_entityAdapter ;
 	};
