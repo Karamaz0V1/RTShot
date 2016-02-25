@@ -12,6 +12,7 @@ namespace OgreFramework
 	{
 		mSelectionBuffer = new Ogre::SelectionBuffer(sceneManager, camera, renderWindow);
 		m_lastAgent = NULL;
+		m_target = NULL;
 	}
 
 	GameElements::SmithAgent * AgentPicking::getLastAgent() const
@@ -28,6 +29,7 @@ namespace OgreFramework
 
 		if(m_isActive && id==m_button)
 		{
+			m_rightClick = false;
 			selectedEntity = mSelectionBuffer->OnSelectionClick(arg.state.X.abs, arg.state.Y.abs) ;
 			if(static_cast<Ogre::MovableObject*>(selectedEntity)!=m_lastSelected)
 			{
@@ -37,30 +39,44 @@ namespace OgreFramework
 			{
 				m_lastSelected = selectedEntity ;
 				notifySelected(selectedEntity) ;
-				::std::cout<<"Picking on object: "<<selectedEntity->getName()<<::std::endl ;
 			}
 		}
 		if(m_isActive && id==OIS::MB_Right) {
+			m_rightClick = true;
+			int x = arg.state.X.abs;
+			int y = arg.state.Y.abs;
+			Ogre::Entity * laink = mSelectionBuffer->OnSelectionClick(x, y);
 			if(m_lastAgent != NULL) {
-				int x = arg.state.X.abs;
-				int y = arg.state.Y.abs;
-				Ogre::Ray mouseRay = m_camera->getCameraToViewportRay(x/float(arg.state.width),y/float(arg.state.height));
-				std::pair<bool,Config::Real> result = mouseRay.intersects(Ogre::Plane(Ogre::Vector3(0,0,1), Ogre::Vector3(0,0,0)));
-				Ogre::Real distance = result.second;
-				Ogre::Vector3 position = mouseRay.getPoint(distance);
-				Math::Vector3<Config::Real> posf(position[0], position[1], position[2]);
-				m_lastAgent->go2(posf.projectZ());
-				Ogre::Entity * laink = mSelectionBuffer->OnSelectionClick(x, y);
-				if(laink != 0 && laink != m_lastSelected) {
-					if(laink->getName() != "scene0Box001")
-						m_lastAgent->setTarget(laink);
-				}
+				if(laink!=0)
+				{
+					if(laink->getName() != "scene0Box001") {
+						notifySelected(laink) ;
+					}
+					else {
+						m_lastAgent->setTarget(NULL);
+						m_lastAgent->go2(getDestinationPos(arg,x,y).projectZ());
+					}
+				}	
 			}
 		}
 	}
 
+	Math::Vector3<Config::Real> AgentPicking::getDestinationPos(const OIS::MouseEvent &arg, int x, int y) {
+		Ogre::Ray mouseRay = m_camera->getCameraToViewportRay(x/float(arg.state.width),y/float(arg.state.height));
+		std::pair<bool,Config::Real> result = mouseRay.intersects(Ogre::Plane(Ogre::Vector3(0,0,1), Ogre::Vector3(0,0,0)));
+		Ogre::Real distance = result.second;
+		Ogre::Vector3 position = mouseRay.getPoint(distance);
+		Math::Vector3<Config::Real> posf(position[0], position[1], position[2]);
+		return posf;
+	}
+
 	void AgentPicking::onMessage(GameElements::SmithAgent::MovedObjectMessage const & msg) {
-		::std::cout<<"Message personnel : la mienne est plus grande que la vôtre"<<::std::endl;
-		m_lastAgent = msg.m_selected;
+		if(!m_rightClick) {
+			m_lastAgent = msg.m_selected;
+		}
+		else {
+			m_target = msg.m_selected;
+			m_lastAgent->setTarget(m_target);
+		}
 	}
 }

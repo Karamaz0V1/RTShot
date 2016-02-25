@@ -34,6 +34,7 @@ namespace GameElements {
 	}
 	SmithAgent::SmithAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : Agent(archetype, weaponArchetype, computeCollisionMesh) {
 		m_collision=false;
+		gotTarget = false;
 	}
 
 	System::MessageEmitter<SmithAgent::MovedObjectMessage> * SmithAgent::getMovedEmitter()
@@ -46,12 +47,24 @@ namespace GameElements {
 		getMovedEmitter()->send(MovedObjectMessage(objet)) ;
 	}
 
-	void SmithAgent::setTarget(Ogre::Entity * target) {
-		::std::cout<<"Target is mine"<<::std::endl;
-		Agent agent;
-		//TODO passer de l'entité à l'agent
-		if(agent->getArchetype()->m_name.back() != this->getArchetype()->m_name.back())
-			m_target = target;
+	void SmithAgent::setTarget(SmithAgent * target) {
+		if(target != NULL) {	
+			if(target->getArchetype()->m_name.back() != this->getArchetype()->m_name.back()) {
+				m_target = target;
+				gotTarget = true;
+				::std::cout<<"Target is mine "<<this->getArchetype()->m_name<<"->"<<m_target->getArchetype()->m_name<<::std::endl;
+			}
+			else {
+				m_target = NULL;
+				gotTarget=false;
+				::std::cout<<"Target is mine "<<this->getArchetype()->m_name<<"-> allié"<<::std::endl;
+			}
+		}
+		else {
+			::std::cout<<"Target is mine "<<this->getArchetype()->m_name<<"-> rien"<<::std::endl;
+			m_target=target;
+			gotTarget=false;
+		}
 	}
 
 	Agent::Pointer SmithAgent::selectWeakestAgent(const vector<Agent::Pointer> & agents) const {

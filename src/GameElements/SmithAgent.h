@@ -29,7 +29,7 @@ namespace GameElements
 		void SmithAgent::go2(Math::Vector2<Config::Real> destination);
 		void SmithAgent::onSelect();
 		void SmithAgent::onUnselect();
-		void SmithAgent::setTarget(Ogre::Entity * target);
+		void SmithAgent::setTarget(SmithAgent * target);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// \fn	virtual void NullAgent::onCollision (const CollisionMessage & message);
@@ -43,7 +43,7 @@ namespace GameElements
 		protected:
 			Math::Vector2<Config::Real> m_velocity;
 			Math::Vector2<Config::Real> m_destination;
-			Ogre::Entity * m_target;
+			SmithAgent * m_target;
 
 		protected:
 			virtual Agent::Pointer selectWeakestAgent(const std::vector<Agent::Pointer> & agents) const;
@@ -51,6 +51,7 @@ namespace GameElements
 			virtual std::vector<Agent::Pointer> getAgentsListFromObjectsList(const std::vector<Triggers::CollisionObject::Pointer> & objects) const;
 			Math::Vector2<Config::Real> randomVelocity() const;
 			Math::Vector2<Config::Real> getVelocity() const;
+			bool gotTarget;
 			//refresh collision
 			bool m_collision;
 	};
