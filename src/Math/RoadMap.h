@@ -17,7 +17,7 @@ namespace Math {
 		private:
 			//std::array<int, 100> _roadMap; // TODO: recreate game map space in array cf. RandomAgent
 			DataStructure::Grid<double> _map;
-			//const GameElements::Map * _cmap
+			const GameElements::Map * _cmap;
 	};
 }
 

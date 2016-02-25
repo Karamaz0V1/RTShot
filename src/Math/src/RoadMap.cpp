@@ -13,17 +13,16 @@ using namespace std;
 namespace Math
 {
 	RoadMap::RoadMap(Math::Vector2<Config::Real> & targetPosition, std::vector<Math::Vector2<Config::Real> > & agentsPositions) :
-		_map(Interval<float>(0, OgreFramework::GlobalConfiguration::getCurrentMap()->width()), Interval<float>(0, OgreFramework::GlobalConfiguration::getCurrentMap()->height()), 1)
-
+		_map(Interval<float>(0, OgreFramework::GlobalConfiguration::getCurrentMap()->width()), Interval<float>(0, OgreFramework::GlobalConfiguration::getCurrentMap()->height()), 1),
+		_cmap(OgreFramework::GlobalConfiguration::getCurrentMap())
 	{
-		const Map * cmap = OgreFramework::GlobalConfiguration::getCurrentMap();
-		Vector2<int> tposition = cmap->toGridCoordinates(targetPosition);
+		Vector2<int> tposition = _cmap->toGridCoordinates(targetPosition);
 		queue<Vector2<int> > cellStack;
 		
 		_map[tposition] = 1;
 		cellStack.push(tposition);
 
-		cout << "[RoadMap] Map creation : " << cmap->width() << "x" << cmap->height() << "..." << endl;
+		cout << "[RoadMap] Map creation : " << _cmap->width() << "x" << _cmap->height() << "..." << endl;
 		while (! cellStack.empty()) {
 			Vector2<int> cell = cellStack.front();
 			cellStack.pop();
@@ -34,7 +33,7 @@ namespace Math
 					Vector2<int> neighbour(cell[0] + i, cell[1] + j);
 					if (! _map.isValid(neighbour)) continue;
 
-					if (cmap->getCell(cmap->toWorldCoordinates(neighbour)).m_speedReduction == 1) {
+					if (_cmap->getCell(_cmap->toWorldCoordinates(neighbour)).m_speedReduction == 1) {
 						if (_map[neighbour] == 0) {
 						//_map[neighbour] = numeric_limits<double>::max();
 						_map[neighbour] = _map[cell] + 10;
@@ -63,62 +62,40 @@ namespace Math
 	}
 	
 	Vector2<Real> RoadMap::getTargetWay(const Vector2<Real> & worldCoordinates, const Config::Real & distanceAllowed) const {
-		cout << "[RoadMap] On me demande le chemin." << endl;
-		const Map * cmap = OgreFramework::GlobalConfiguration::getCurrentMap();
-		Vector2<int> gridCoordinates = cmap->toGridCoordinates(worldCoordinates);
-		if (_map[gridCoordinates] <= 1) {
-			cout << "[RoadMap] Normalement t'es arrivé gros." << endl;
+		//cout << "[RoadMap] On me demande le chemin." << endl;
+		Vector2<int> gridCoordinates = _cmap->toGridCoordinates(worldCoordinates);
+		double bestWayScore = _map[gridCoordinates];
+
+		if (bestWayScore < 1.1) {
+			//cout << "[RoadMap] Normalement t'es arrivé gros." << endl;
 			return Vector2<Real>();
 		}
 
-		
-		double bestWayScore = _map[gridCoordinates];
-
-		// Shit happens
-		if (bestWayScore == 0) bestWayScore = numeric_limits<double>::max();
-
 		Vector2<int> actualCoordinates = gridCoordinates;
 		Vector2<int> bestWayCoordinates = gridCoordinates;
-		while ( bestWayScore > _map[gridCoordinates] - distanceAllowed) {
+
+		while ( bestWayScore + 0 > _map[gridCoordinates] - distanceAllowed) {
 		
-			cout << "[RoadMap] Je suis en " << actualCoordinates << endl;
+			//cout << "[RoadMap] Je suis en " << actualCoordinates << endl;
 			Vector2<int> neighbour;
-			bool better = false;
 			for (int i = -1; i <= 1; i++)
 				for (int j = -1; j <= 1; j++) {
 					if (j == 0 && i == 0) continue;
 					neighbour= Vector2<int> (actualCoordinates[0] + i, actualCoordinates[1] + j);
 					if (! _map.isValid(neighbour)) continue;
 					if (_map[neighbour] > bestWayScore) continue;
-					if (_map[neighbour] == bestWayScore && abs(i) == abs(j)) continue;
+					//if (_map[neighbour] == bestWayScore && abs(i) == abs(j)) continue;
 					bestWayScore = _map[neighbour];
 					bestWayCoordinates = neighbour;
-					better = true;
-					//bestWay[0] = i ;
-					//bestWay[1] = j ;
 				}
-			cout << "[RoadMap] Je vais en " << neighbour << endl;
-			actualCoordinates = bestWayCoordinates;
-			if (! better) break;
-				
+			//cout << "[RoadMap] Je vais en " << neighbour << endl;
+			actualCoordinates = bestWayCoordinates;			
 		}
 
 		Vector2<Real> bestWay(actualCoordinates - gridCoordinates);
-		cout << "[RoadMap] J'ai donné le chemin." << endl;
-		return bestWay.normalized();
-		/*if (bestWay[0] == 0 && bestWay[1] == 0) {
-			cout << "arrivé ? -------------------------------- " << endl;
-			cout << "case actuelle : " << _map[gridCoordinates] << endl;
-			for (int i = -1; i <= 1; i++)
-				for (int j = -1; j <= 1; j++) {
-					Vector2<int> neighbour(gridCoordinates[0] + i, gridCoordinates[1] + j);
-					cout << "case " << i << " " << j << " : " << _map[neighbour] << endl;
-				}
-			cout << "----------------------------------------- " << endl;
-		} else {
-			cout << "On bouge" << endl;
-		}*/
+		//cout << "[RoadMap] J'ai donné le chemin." << endl;
 
+		return bestWay.normalized();
 	}
 
 	Math::Vector2<Config::Real> RoadMap::getPositionTowardTarget(Math::Vector2<Config::Real> & velocity, const Math::Vector2<Config::Real> & worldCoordinates, const double & agentSpeed, const Config::Real & dt) const {		
