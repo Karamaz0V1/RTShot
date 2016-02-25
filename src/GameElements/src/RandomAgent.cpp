@@ -8,26 +8,6 @@ using std::endl;
 
 namespace GameElements
 {
-	void RandomAgent::onCollision( const CollisionMessage & message )
-	{
-		/*Agent::Pointer agent1 = boost::dynamic_pointer_cast<Agent>(message.m_object1);
-		Agent::Pointer agent2 = boost::dynamic_pointer_cast<Agent>(message.m_object2);
-
-		if(agent1.get() == NULL || agent2.get() == NULL) return;
-
-		if (m_velocity[0] * m_velocity[0] > m_velocity[1] * m_velocity[1])
-			m_velocity[1] = -m_velocity[1];
-		else
-			m_velocity[0] = -m_velocity[0];*/
-		/*
-		if (this == agent1.get())
-			m_velocity = (agent1->getPosition().projectZ() - agent2->getPosition().projectZ()).normalized() * getMaxSpeed();
-		else		// this == agent2
-			m_velocity = (agent2->getPosition().projectZ() - agent1->getPosition().projectZ()).normalized() * getMaxSpeed();
-		*/
-	}
-
-
 	RandomAgent::RandomAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : SmithAgent(archetype, weaponArchetype, computeCollisionMesh) {
 		m_velocity = randomVelocity() ;
 		_map = new Math::RoadMap();
@@ -44,23 +24,28 @@ namespace GameElements
 		m_velocity = _map->getTargetWay(getPosition().projectZ(), m_archetype->m_speed * dt) * m_archetype->m_speed;
 		//cout << "Position : " << getPosition().projectZ() << " Velocité: " << m_velocity << endl;
 
-		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt;//*(1.0-currentCell.m_speedReduction) ;
+		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*((1.0-currentCell.m_speedReduction) + (currentCell.m_speedReduction==1));
 		//Math::Vector2<Config::Real> newPosition = _map->getPositionTowardTarget(m_velocity, getPosition().projectZ(), m_archetype->m_speed, dt);
 
 		std::vector<Triggers::CollisionObject::Pointer> objects = m_perception->perceivedAgents();
 		//for (std::vector<Triggers::CollisionObject::Pointer>::const_iterator it = objects.begin(); it != objects.end(); it++) {
 			//(*it)->
 		//}
-
+		
 		// If displacement is valid, the agent moves, otherwise, a new random velocity is computed
-		//if(OgreFramework::GlobalConfiguration::getCurrentMap()->isValid(newPosition) && OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(newPosition).m_speedReduction!=1.0)
-		//{
+
+		if(OgreFramework::GlobalConfiguration::getCurrentMap()->isValid(newPosition) && OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(newPosition).m_speedReduction!=1.0 && m_collision == false)
+		{
 			setOrientation(m_velocity) ;
 			setPosition(newPosition.push(0.0)) ;
-		//} else {
-		//	//m_velocity = randomVelocity() ;
-		//}
+		}else if(m_collision==true){
+			newPosition = getPosition().projectZ()+m_velocity.rotate90()*dt*((1.0-currentCell.m_speedReduction) + (currentCell.m_speedReduction==1));
+			setPosition(newPosition.push(0.0)) ;
+		}else {
+			m_velocity = randomVelocity() ;
+		}
 
+		m_collision = false;
 		// Handles perception and fires on agents
 		if(canFire())
 		{

@@ -8,6 +8,7 @@
 #include <Ogre/DotSceneLoader.h>
 #include <OgreFramework/PickingSelectionBuffer.h>
 #include <OgreFramework/PickingBoundingBox.h>
+#include <OgreFramework/AgentPicking.h>
 #include <OgreFramework/GeometryLoader.h>
 #include <OgreFramework/GlobalConfiguration.h>
 #include <GameElements/ConfigurationLoader.h>
@@ -24,6 +25,8 @@ namespace OgreFramework
 	MainApplication::MainApplication()
 		: m_keyboardState(*KeyboardState::getInstance())
 	{
+		startGame = false;
+		pause=true;
 	}
 
 	MainApplication::~MainApplication()
@@ -98,7 +101,8 @@ namespace OgreFramework
 		}
 		// Setups the picking
 		//m_picking = new PickingBoundingBox(m_sceneManager, m_camera, OIS::MB_Left) ;
-		m_picking = new PickingSelectionBuffer(m_window, m_sceneManager, m_camera, OIS::MB_Left) ;
+		//m_picking = new PickingSelectionBuffer(m_window, m_sceneManager, m_camera, OIS::MB_Left) ;
+		m_picking = new AgentPicking(m_window, m_sceneManager, m_camera, OIS::MB_Left, GameElements::SmithAgent::getMovedEmitter());
 		// Setups the camera control system
 		m_cameraManager = new RTSCameraManager(m_sceneManager, m_camera, &m_keyboardState) ;
 
@@ -176,8 +180,16 @@ namespace OgreFramework
 		// Updates camera manager
 		m_cameraManager->update(dt) ;
 		// Updates (animation, behavoir & son on) are called here :)
-		GlobalConfiguration::getController()->update(dt) ;
+		if(startGame==true	&& pause == false){
+			GlobalConfiguration::getController()->update(dt) ;
+		}
 
+		if(m_keyboardState.isDown(OIS::KC_SPACE)){
+			startGame=true;
+		}
+		if(m_keyboardState.isDown(OIS::KC_SPACE)){
+			pause=!pause;
+		}
 		//static bool explosionFired = false ;
 		//if(absoluteTime>10.0 && !explosionFired)
 		//{

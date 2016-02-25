@@ -9,7 +9,6 @@ namespace OgreFramework
 	DesignPattern::StaticMember<::std::map<Ogre::Entity*, PickableObject*> > PickableObject::m_pickableInstances ;
 	
 	DesignPattern::StaticMember<System::MessageEmitter<PickableObject::SelectedObjectMessage> > PickableObject::m_selectedEmitter ;
-	DesignPattern::StaticMember<System::MessageEmitter<PickableObject::MovedObjectMessage> > PickableObject::m_movedEmitter ;
 	DesignPattern::StaticMember<System::MessageEmitter<PickableObject::UnselectedObjectMessage> > PickableObject::m_unselectedEmitter ;
 
 	PickableObject::PickableObject(Ogre::Node * object)
@@ -45,13 +44,9 @@ namespace OgreFramework
 
 	void PickableObject::onSelect()
 	{
-		m_isSelected = true ;
+		::std::cout<<"Je suis PickableObject::onSelect()"<<::std::endl ;
+		m_isSelected = true ;		
 		getSelectedEmitter()->send(SelectedObjectMessage(*this)) ;
-	}
-
-	void PickableObject::onMovement(int x, int y)
-	{
-		getMovedEmitter()->send(MovedObjectMessage(*this,x,y)) ;
 	}
 
 	void PickableObject::onUnselect()
@@ -63,11 +58,6 @@ namespace OgreFramework
 	System::MessageEmitter<PickableObject::SelectedObjectMessage> * PickableObject::getSelectedEmitter()
 	{
 		return m_selectedEmitter.getInstance() ;
-	}
-
-	System::MessageEmitter<PickableObject::MovedObjectMessage> * PickableObject::getMovedEmitter()
-	{
-		return m_movedEmitter.getInstance() ;
 	}
 
 	System::MessageEmitter<PickableObject::UnselectedObjectMessage> * PickableObject::getUnselectedEmitter()

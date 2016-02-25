@@ -7,7 +7,51 @@ using std::cout;
 using std::endl;
 
 namespace GameElements {
+	DesignPattern::StaticMember<System::MessageEmitter<SmithAgent::MovedObjectMessage> > SmithAgent::m_movedEmitter ;
+	Math::Vector2<Config::Real> newPosition;
+	void SmithAgent::onCollision( const CollisionMessage & message )
+	{
+		
+		Agent::Pointer agent1 = boost::dynamic_pointer_cast<Agent>(message.m_object1);
+		Agent::Pointer agent2 = boost::dynamic_pointer_cast<Agent>(message.m_object2);
+
+		if(agent1.get() == NULL || agent2.get() == NULL) return;
+		/*
+		if (m_velocity[0] * m_velocity[0] > m_velocity[1] * m_velocity[1])
+			m_velocity[1] = -m_velocity[1];
+		else
+			m_velocity[0] = -m_velocity[0];*/
+
+		//if collision is active
+		//if(m_collision==true){
+			if (this == agent1.get()){
+				//m_velocity = (getPosition().projectZ() - agent2->getPosition().projectZ()).normalized() * getMaxSpeed();
+				m_collision=true;
+			}else{		// this == agent2
+				m_collision=true;
+				//m_velocity = (getPosition().projectZ() - agent1->getPosition().projectZ()).normalized() * getMaxSpeed();
+			}
+	}
 	SmithAgent::SmithAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : Agent(archetype, weaponArchetype, computeCollisionMesh) {
+		m_collision=false;
+	}
+
+	System::MessageEmitter<SmithAgent::MovedObjectMessage> * SmithAgent::getMovedEmitter()
+	{
+		return m_movedEmitter.getInstance() ;
+	}
+
+	void SmithAgent::noticeMeSenpai(SmithAgent * objet)
+	{
+		getMovedEmitter()->send(MovedObjectMessage(objet)) ;
+	}
+
+	void SmithAgent::setTarget(Ogre::Entity * target) {
+		::std::cout<<"Target is mine"<<::std::endl;
+		Agent * agent;
+		//TODO passer de l'entité à l'agent
+		if(agent->getArchetype()->m_name.back() != this->getArchetype()->m_name.back())
+			m_target = target;
 	}
 
 	Agent::Pointer SmithAgent::selectWeakestAgent(const vector<Agent::Pointer> & agents) const {
@@ -49,12 +93,13 @@ namespace GameElements {
 	}
 
 	void SmithAgent::update( const Config::Real & dt ) {
-		cout << "Mister Anderson?" << endl;
+
+		//cout << "Mister Anderson?" << endl;
 		return;
 
 		// Computes movements
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
-		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
+		newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
 
 		std::vector<Triggers::CollisionObject::Pointer> objects = m_perception->perceivedAgents();
 		//for (std::vector<Triggers::CollisionObject::Pointer>::const_iterator it = objects.begin(); it != objects.end(); it++) {
@@ -62,13 +107,13 @@ namespace GameElements {
 		//}
 
 		// If displacement is valid, the agent moves, otherwise, a new random velocity is computed
-		if(OgreFramework::GlobalConfiguration::getCurrentMap()->isValid(newPosition) && OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(newPosition).m_speedReduction!=1.0) {
+		if(OgreFramework::GlobalConfiguration::getCurrentMap()->isValid(newPosition) && OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(newPosition).m_speedReduction!=1.0 && m_collision==false ) {
 			setOrientation(m_velocity) ;
-			setPosition(newPosition.push(0.0)) ;
+			setPosition(newPosition.push(getPosition()[2])) ;
 		} else {
 			m_velocity = randomVelocity() ;
 		}
-
+		m_collision=false;
 		// Handles perception and fires on agents
 		if(canFire()) {
 			std::vector<Agent::Pointer> agents = getAgentsListFromObjectsList(objects);
@@ -101,5 +146,19 @@ namespace GameElements {
 	Math::Vector2<Config::Real> SmithAgent::getVelocity() const	{
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
 		return m_velocity*(1.0-currentCell.m_speedReduction) ;
+	}
+
+	void SmithAgent::onSelect() {
+		::std::cout<<"OMG Flantier :')"<<::std::endl;
+		noticeMeSenpai(this);
+	}
+
+	void SmithAgent::onUnselect() {
+		::std::cout<<"jpp de ma femme Flantier, LOL"<<::std::endl;
+		noticeMeSenpai();
+	}
+
+	void SmithAgent::go2(Math::Vector2<Config::Real> destination) {
+		::std::cout<<"Destination..."<<destination<<::std::endl ;
 	}
 }

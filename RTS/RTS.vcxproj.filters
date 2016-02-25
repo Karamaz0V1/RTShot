@@ -310,6 +310,9 @@
     <ClInclude Include="..\src\Math\RoadMap.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\OgreFramework\AgentPicking.h">
+      <Filter>OgreFramework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\System\src\ActiveObject.cpp">
@@ -464,6 +467,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Math\src\RoadMap.cpp">
       <Filter>Math\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\OgreFramework\src\AgentPicking.cpp">
+      <Filter>OgreFramework\src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -68,7 +68,7 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(TEMP)\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
@@ -295,6 +295,7 @@ echo "Done"
     <ClInclude Include="..\src\GameElements\Weapon.h" />
     <ClInclude Include="..\src\GameElements\WeaponsArchetypes.h" />
     <ClInclude Include="..\src\Math\RoadMap.h" />
+    <ClInclude Include="..\src\OgreFramework\AgentPicking.h" />
     <ClInclude Include="..\src\OgreFramework\GlobalConfiguration.h" />
     <ClInclude Include="..\src\Ogre\CollectEntities.h" />
     <ClInclude Include="..\src\System\ActiveObject.h" />
@@ -375,6 +376,7 @@ echo "Done"
     <ClCompile Include="..\src\GameElements\src\Weapon.cpp" />
     <ClCompile Include="..\src\GameElements\src\WeaponsArchetypes.cpp" />
     <ClCompile Include="..\src\Math\src\RoadMap.cpp" />
+    <ClCompile Include="..\src\OgreFramework\src\AgentPicking.cpp" />
     <ClCompile Include="..\src\OgreFramework\src\GlobalConfiguration.cpp" />
     <ClCompile Include="..\src\Ogre\src\collectEntities.cpp" />
     <ClCompile Include="..\src\System\src\ActiveObject.cpp" />

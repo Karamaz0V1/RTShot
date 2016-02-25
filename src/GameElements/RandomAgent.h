@@ -1,6 +1,5 @@
 #ifndef _GameElements_RandomAgent_H
 #define _GameElements_RandomAgent_H
-
 #include <GameElements/SmithAgent.h>
 #include <Math/RoadMap.h>
 
@@ -22,15 +21,7 @@ namespace GameElements
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		virtual void update(const Config::Real & dt);
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// \fn	virtual void NullAgent::onCollision (const CollisionMessage & message);
-		///
-		/// \brief	Executes the collision action.
-		///
-		/// \author	Fabrice Lamarche, university of Rennes 1
-		/// \param	message	The message.
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		virtual void onCollision (const CollisionMessage & message);
+		
 
 		Map::GroundCellDescription findEnemyCell() const;
 	private:
