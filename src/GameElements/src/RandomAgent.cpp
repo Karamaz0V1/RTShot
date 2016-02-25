@@ -36,11 +36,12 @@ namespace GameElements
 
 	void RandomAgent::update( const Config::Real & dt )
 	{
+		if (dt == 0) return;
 		// Computes movements
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
 		//Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
 		//cout << "[RandomAgent] Je demande mon chemin" << endl;
-		m_velocity = _map->getTargetWay(getPosition().projectZ()) * m_archetype->m_speed;
+		m_velocity = _map->getTargetWay(getPosition().projectZ(), m_archetype->m_speed * dt) * m_archetype->m_speed;
 		//cout << "Position : " << getPosition().projectZ() << " Velocité: " << m_velocity << endl;
 
 		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt;//*(1.0-currentCell.m_speedReduction) ;

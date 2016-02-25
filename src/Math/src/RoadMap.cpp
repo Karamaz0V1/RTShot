@@ -14,6 +14,7 @@ namespace Math
 {
 	RoadMap::RoadMap(Math::Vector2<Config::Real> & targetPosition, std::vector<Math::Vector2<Config::Real> > & agentsPositions) :
 		_map(Interval<float>(0, OgreFramework::GlobalConfiguration::getCurrentMap()->width()), Interval<float>(0, OgreFramework::GlobalConfiguration::getCurrentMap()->height()), 1)
+
 	{
 		const Map * cmap = OgreFramework::GlobalConfiguration::getCurrentMap();
 		Vector2<int> tposition = cmap->toGridCoordinates(targetPosition);
@@ -34,7 +35,11 @@ namespace Math
 					if (! _map.isValid(neighbour)) continue;
 
 					if (cmap->getCell(cmap->toWorldCoordinates(neighbour)).m_speedReduction == 1) {
-						_map[neighbour] = numeric_limits<double>::max();
+						if (_map[neighbour] == 0) {
+						//_map[neighbour] = numeric_limits<double>::max();
+						_map[neighbour] = _map[cell] + 10;
+						cellStack.push(neighbour);
+						}
 						continue;
 					}
 					
@@ -57,34 +62,50 @@ namespace Math
 		//delete _map;
 	}
 	
-	Vector2<Real> RoadMap::getTargetWay(Vector2<Real> const & worldCoordinates) const {
+	Vector2<Real> RoadMap::getTargetWay(const Vector2<Real> & worldCoordinates, const Config::Real & distanceAllowed) const {
 		cout << "[RoadMap] On me demande le chemin." << endl;
 		const Map * cmap = OgreFramework::GlobalConfiguration::getCurrentMap();
 		Vector2<int> gridCoordinates = cmap->toGridCoordinates(worldCoordinates);
-		if (_map[gridCoordinates] == 1) {
+		if (_map[gridCoordinates] <= 1) {
 			cout << "[RoadMap] Normalement t'es arrivé gros." << endl;
 			return Vector2<Real>();
 		}
 
-		Vector2<Real> bestWay;
+		
 		double bestWayScore = _map[gridCoordinates];
 
 		// Shit happens
 		if (bestWayScore == 0) bestWayScore = numeric_limits<double>::max();
 
-		for (int i = -1; i <= 1; i++)
-			for (int j = -1; j <= 1; j++) {
-				if (j == 0 && i == 0) continue;
-				Vector2<int> neighbour(gridCoordinates[0] + i, gridCoordinates[1] + j);
-				if (! _map.isValid(neighbour)) continue;
-				if (_map[neighbour] > bestWayScore) continue;
-				if (_map[neighbour] == bestWayScore && abs(i) == abs(j)) continue;
-				bestWayScore = _map[neighbour];
-				// Todo: set bestWay direction refactor
-				bestWay[0] = i ;//- j * 1.0f / 2;
-				bestWay[1] = j ;//- i * 1.0f / 2;
-			}
+		Vector2<int> actualCoordinates = gridCoordinates;
+		Vector2<int> bestWayCoordinates = gridCoordinates;
+		while ( bestWayScore > _map[gridCoordinates] - distanceAllowed) {
+		
+			cout << "[RoadMap] Je suis en " << actualCoordinates << endl;
+			Vector2<int> neighbour;
+			bool better = false;
+			for (int i = -1; i <= 1; i++)
+				for (int j = -1; j <= 1; j++) {
+					if (j == 0 && i == 0) continue;
+					neighbour= Vector2<int> (actualCoordinates[0] + i, actualCoordinates[1] + j);
+					if (! _map.isValid(neighbour)) continue;
+					if (_map[neighbour] > bestWayScore) continue;
+					if (_map[neighbour] == bestWayScore && abs(i) == abs(j)) continue;
+					bestWayScore = _map[neighbour];
+					bestWayCoordinates = neighbour;
+					better = true;
+					//bestWay[0] = i ;
+					//bestWay[1] = j ;
+				}
+			cout << "[RoadMap] Je vais en " << neighbour << endl;
+			actualCoordinates = bestWayCoordinates;
+			if (! better) break;
+				
+		}
 
+		Vector2<Real> bestWay(actualCoordinates - gridCoordinates);
+		cout << "[RoadMap] J'ai donné le chemin." << endl;
+		return bestWay.normalized();
 		/*if (bestWay[0] == 0 && bestWay[1] == 0) {
 			cout << "arrivé ? -------------------------------- " << endl;
 			cout << "case actuelle : " << _map[gridCoordinates] << endl;
@@ -98,11 +119,9 @@ namespace Math
 			cout << "On bouge" << endl;
 		}*/
 
-		return bestWay.normalized();
-
 	}
 
-	Math::Vector2<Config::Real> RoadMap::getPositionTowardTarget(Math::Vector2<Config::Real> & velocity, const Math::Vector2<Config::Real> const & worldCoordinates, const double & agentSpeed, const Config::Real & dt) const {		
+	Math::Vector2<Config::Real> RoadMap::getPositionTowardTarget(Math::Vector2<Config::Real> & velocity, const Math::Vector2<Config::Real> & worldCoordinates, const double & agentSpeed, const Config::Real & dt) const {		
 		double maxdist = agentSpeed * dt * 10;
 		cout << "[RoadMap] [getPosition] Distance autorisée : " << maxdist << endl;
 		const Map * cmap = OgreFramework::GlobalConfiguration::getCurrentMap();
