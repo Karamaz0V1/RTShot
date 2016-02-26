@@ -24,8 +24,7 @@ namespace GameElements
 		
 
 		Map::GroundCellDescription findEnemyCell() const;
-	private:
-		Math::RoadMap * _map;
+
 
 	};
 }

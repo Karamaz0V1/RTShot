@@ -35,6 +35,7 @@ namespace GameElements {
 	SmithAgent::SmithAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : Agent(archetype, weaponArchetype, computeCollisionMesh) {
 		m_collision=false;
 		gotTarget = false;
+		m_mapInit = false;
 	}
 
 	System::MessageEmitter<SmithAgent::MovedObjectMessage> * SmithAgent::getMovedEmitter()
@@ -173,5 +174,13 @@ namespace GameElements {
 
 	void SmithAgent::go2(Math::Vector2<Config::Real> destination) {
 		::std::cout<<"Destination..."<<destination<<::std::endl ;
+		if (m_mapInit) delete m_map;
+		m_map = new Math::RoadMap(destination);//, m_position);
+		m_mapInit = true;
+	}
+
+	Math::Vector2<Config::Real> SmithAgent::destinationWay() const {
+		if (! m_mapInit) return Math::Vector2<Config::Real>();
+		return m_map->getTargetWay(m_position, m_archetype->m_speed);
 	}
 }

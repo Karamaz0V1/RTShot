@@ -89,7 +89,8 @@ namespace Math
 					bestWayCoordinates = neighbour;
 				}
 			//cout << "[RoadMap] Je vais en " << neighbour << endl;
-			actualCoordinates = bestWayCoordinates;			
+			actualCoordinates = bestWayCoordinates;	
+			break; // TODO: refactor
 		}
 
 		Vector2<Real> bestWay(actualCoordinates - gridCoordinates);

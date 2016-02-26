@@ -3,6 +3,7 @@
 
 #include <OgreFramework/GlobalConfiguration.h>
 #include <GameElements/Agent.h>
+#include <Math/RoadMap.h>
 
 namespace GameElements
 {
@@ -27,9 +28,10 @@ namespace GameElements
 	public:
 		static System::MessageEmitter<MovedObjectMessage> * getMovedEmitter();
 		void SmithAgent::go2(Math::Vector2<Config::Real> destination);
-		void SmithAgent::onSelect();
-		void SmithAgent::onUnselect();
-		void SmithAgent::setTarget(SmithAgent * target);
+		Math::Vector2<Config::Real> destinationWay() const;
+		void onSelect();
+		void onUnselect();
+		void setTarget(SmithAgent * target);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// \fn	virtual void NullAgent::onCollision (const CollisionMessage & message);
@@ -54,6 +56,8 @@ namespace GameElements
 			bool gotTarget;
 			//refresh collision
 			bool m_collision;
+			Math::RoadMap * m_map;
+			bool m_mapInit;
 	};
 }
 #endif

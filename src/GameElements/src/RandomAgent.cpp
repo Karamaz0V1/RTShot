@@ -10,7 +10,7 @@ namespace GameElements
 {
 	RandomAgent::RandomAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : SmithAgent(archetype, weaponArchetype, computeCollisionMesh) {
 		m_velocity = randomVelocity() ;
-		_map = new Math::RoadMap();
+		//_map = new Math::RoadMap();
 		OgreFramework::GlobalConfiguration::getCurrentMap()->show();
 	}
 
@@ -21,7 +21,7 @@ namespace GameElements
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
 		//Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
 		//cout << "[RandomAgent] Je demande mon chemin" << endl;
-		m_velocity = _map->getTargetWay(getPosition().projectZ(), m_archetype->m_speed * dt) * m_archetype->m_speed;
+		m_velocity = destinationWay() * m_archetype->m_speed;
 		//cout << "Position : " << getPosition().projectZ() << " Velocité: " << m_velocity << endl;
 
 		Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*((1.0-currentCell.m_speedReduction) + (currentCell.m_speedReduction==1));
