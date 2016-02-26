@@ -255,7 +255,7 @@ namespace OgreFramework
 		//}
 
 		//m_trayManager->showAll();
-		
+
 		//Ogre::AxisAlignedBox box = Ext::Ogre::computeBoundingBox(m_shipShape) ;
 		//::std::cout<<box.getMinimum()<<" / "<<box.getMaximum()<<::std::endl ;
 
@@ -275,9 +275,8 @@ namespace OgreFramework
 
 		if(m_keyboardState.isDown(OIS::KC_SPACE)&&startGame==false){
 			startGame=true;
+			gameOver=false;
 			m_trayManager->hideTrays();
-			//m_trayManager->destroyWidget("Menu");
-			//m_trayManager->destroyWidget("Select");
 		}
 		
 		//static bool explosionFired = false ;
@@ -299,40 +298,46 @@ namespace OgreFramework
 
 		//now it's time to see how you die, remember the death is not the end, but only a transition
 		//std::cout<<agentBlackBox.size()<<"\n";
-		/*
+		//*
+		int nbMoi=agentBlackBox.size()/2;
+		int nbIA=agentBlackBox.size()/2;
 		for (int i = 0;i<agentBlackBox.size();i++){
-			if(agentBlackBox[i]->isDead()){
-				std::cout<<"je suis nul"<<std::endl;
+			if(agentBlackBox[i]!=NULL){
+				if(agentBlackBox[i]->isDead()){
+					agentBlackBox[i]->destroy();
+					agentBlackBox[i]=NULL;
+				}
 			}
-		}
-		//*/
-		/*int teamPlayer=0;
-		int teamIA=0;
-		for (int i = 0;i<agentBlackBox.size();i++){
-			std::string sMoi = agentBlackBox[i]->getArchetype()->m_name;
-			char monType = sMoi.back();
-			if(monType=='R'){
-				teamPlayer++;
-			}else{
-				teamIA++;
+			if(agentBlackBox[i]==NULL){
+				if(i<agentBlackBox.size()/2){
+					nbMoi--;
+				}else{
+					nbIA--;
+				}
 			}
 		}
 
-		if(teamPlayer==0){
+		if(nbMoi==0){
 			gameOver=true;
 			playerWon=false;
-		}else if(teamIA==0){
+		}else if(nbIA==0){
 			gameOver=true;
 			playerWon=true;
 		}
 
-		if(gameOver==true){
+		if((gameOver==true)&&(startGame==true)){
+			Ogre::DisplayString capt ;
 			if(playerWon){
-				m_trayManager->showAll();
+				capt="Le joueur a gagne";
 			}else{
-				m_trayManager->showAll();
+				capt="L'IA a gagne";
 			}
-		}*/
+				((OgreBites::TextBox*)m_trayManager->getWidget(OgreBites::TL_CENTER,"txt1"))->clearText();
+			
+				m_trayManager->showAll();
+				((OgreBites::TextBox*)m_trayManager->getWidget(OgreBites::TL_CENTER,"txt1"))->appendText(capt);
+				startGame=false;
+		}
 	}
 
 	bool MainApplication::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
