@@ -5,7 +5,11 @@
 using std::vector;
 using std::cout;
 using std::endl;
-
+//TODO
+/*
+	vérifier fluidité changement destination
+	vérifier si IA ou player
+*/
 namespace GameElements {
 	DesignPattern::StaticMember<System::MessageEmitter<SmithAgent::MovedObjectMessage> > SmithAgent::m_movedEmitter ;
 	Math::Vector2<Config::Real> newPosition;
@@ -32,7 +36,7 @@ namespace GameElements {
 				//m_velocity = (getPosition().projectZ() - agent1->getPosition().projectZ()).normalized() * getMaxSpeed();
 			}
 	}
-	SmithAgent::SmithAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : Agent(archetype, weaponArchetype, computeCollisionMesh) {
+	SmithAgent::SmithAgent( const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh/*=true*/ ) : Agent(archetype, weaponArchetype, computeCollisionMesh), time(0.0) {
 		m_collision=false;
 		gotTarget = false;
 		m_mapInit = false;
@@ -57,10 +61,11 @@ namespace GameElements {
 			}
 			else {
 				m_target = NULL;
-				m_destination = target->getPosition().projectZ();
 				gotTarget=false;
 				::std::cout<<"Target is mine "<<this->getArchetype()->m_name<<"-> allié"<<::std::endl;
 			}
+			m_destination = target->getPosition().projectZ();
+			go2(m_destination);
 		}
 		else {
 			::std::cout<<"Target is mine "<<this->getArchetype()->m_name<<"-> rien"<<::std::endl;
@@ -115,6 +120,14 @@ namespace GameElements {
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
 		//Math::Vector2<Config::Real> newPosition = getPosition().projectZ()+m_velocity*dt*(1.0-currentCell.m_speedReduction) ;
 		//cout << "[RandomAgent] Je demande mon chemin" << endl;
+		if(time/2 >= 1) {
+			time=0;
+			if(gotTarget) {
+				go2(m_target->getPosition().projectZ());
+			}
+		}
+		else
+			time += dt;
 		m_velocity = destinationWay() * m_archetype->m_speed;
 		//cout << "Position : " << getPosition().projectZ() << " Velocité: " << m_velocity << endl;
 
