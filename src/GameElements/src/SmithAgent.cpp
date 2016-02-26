@@ -57,6 +57,7 @@ namespace GameElements {
 			}
 			else {
 				m_target = NULL;
+				m_destination = target->getPosition().projectZ();
 				gotTarget=false;
 				::std::cout<<"Target is mine "<<this->getArchetype()->m_name<<"-> allié"<<::std::endl;
 			}
