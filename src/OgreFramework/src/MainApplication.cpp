@@ -309,7 +309,7 @@ namespace OgreFramework
 				}
 			}
 			if(agentBlackBox[i]==NULL){
-				if(i<agentBlackBox.size()/2){
+				if(i>agentBlackBox.size()/2){
 					nbMoi--;
 				}else{
 					nbIA--;
