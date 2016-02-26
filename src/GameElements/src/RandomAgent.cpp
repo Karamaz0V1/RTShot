@@ -16,6 +16,7 @@ namespace GameElements
 
 	void RandomAgent::update( const Config::Real & dt )
 	{
+		cout << "[RandomAgent] update" << endl;
 		if (dt == 0) return;
 		// Computes movements
 		const Map::GroundCellDescription & currentCell = OgreFramework::GlobalConfiguration::getCurrentMap()->getCell(getPosition().projectZ()) ;
@@ -42,7 +43,9 @@ namespace GameElements
 			newPosition = getPosition().projectZ()+m_velocity.rotate90()*dt*((1.0-currentCell.m_speedReduction) + (currentCell.m_speedReduction==1));
 			setPosition(newPosition.push(0.0)) ;
 		}else {
-			m_velocity = randomVelocity() ;
+			//m_velocity = randomVelocity() ;
+			newPosition = getPosition().projectZ()+m_velocity.rotate90()*dt*((1.0-currentCell.m_speedReduction) + (currentCell.m_speedReduction==1));
+			setPosition(newPosition.push(0.0)) ;
 		}
 
 		m_collision = false;

@@ -74,7 +74,7 @@ namespace Math
 		Vector2<int> actualCoordinates = gridCoordinates;
 		Vector2<int> bestWayCoordinates = gridCoordinates;
 
-		while ( bestWayScore + 0 > _map[gridCoordinates] - distanceAllowed) {
+		while ( (bestWayScore + 0 > _map[gridCoordinates] - distanceAllowed) && (bestWayScore > 1.1)) {
 		
 			//cout << "[RoadMap] Je suis en " << actualCoordinates << endl;
 			Vector2<int> neighbour;
@@ -90,7 +90,7 @@ namespace Math
 				}
 			//cout << "[RoadMap] Je vais en " << neighbour << endl;
 			actualCoordinates = bestWayCoordinates;	
-			break; // TODO: refactor
+			//break; // TODO: refactor
 		}
 
 		Vector2<Real> bestWay(actualCoordinates - gridCoordinates);

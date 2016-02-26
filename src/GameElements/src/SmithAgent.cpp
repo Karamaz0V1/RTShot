@@ -107,7 +107,7 @@ namespace GameElements {
 	}
 
 	void SmithAgent::update( const Config::Real & dt ) {
-
+		cout << "[SmithAgent] update" << endl;
 		//cout << "Mister Anderson?" << endl;
 		return;
 
@@ -125,7 +125,7 @@ namespace GameElements {
 			setOrientation(m_velocity) ;
 			setPosition(newPosition.push(getPosition()[2])) ;
 		} else {
-			m_velocity = randomVelocity() ;
+			m_velocity = randomVelocity();
 		}
 		m_collision=false;
 		// Handles perception and fires on agents
