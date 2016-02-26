@@ -29,6 +29,7 @@
 #include <Ext/Ogre/ComputeBoundingBox.h>
 #include <Triggers/BasicCollisionDetector.h>
 #include <GameElements/RandomAgent.h>
+#include <GameElements/HumanAgent.h>
 
 namespace OgreFramework
 {
@@ -167,7 +168,7 @@ namespace OgreFramework
 		bool loaded;
 		bool isclicked;
 		OgreBites::SelectMenu * menu1;
-		std::vector<GameElements::RandomAgent *> agentBlackBox ;
+		std::vector<GameElements::SmithAgent *> agentBlackBox ;
 		
 		//Ogre::SceneNode * m_shipShape ;
 		//GameElements::NullAgent::Pointer m_entityAdapter ;

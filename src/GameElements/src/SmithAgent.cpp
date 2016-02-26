@@ -130,7 +130,7 @@ namespace GameElements {
 
 		if (m_collision) m_velocity = m_velocity.rotate90();
 		
-		newPosition = getPosition().projectZ() + m_velocity * dt * ((1.0 - currentCell.m_speedReduction) + (currentCell.m_speedReduction == 1));
+		newPosition = getPosition().projectZ() + m_velocity * dt * (1.1 - currentCell.m_speedReduction);
 		setOrientation(m_velocity);
 		setPosition(newPosition.push(0.0));
 

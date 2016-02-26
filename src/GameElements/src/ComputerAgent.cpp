@@ -6,11 +6,11 @@ namespace GameElements
 {
 	ComputerAgent::ComputerAgent(const UnitsArchetypes::Archetype * archetype, const WeaponsArchetypes::Archetype * weaponArchetype, bool computeCollisionMesh) : SmithAgent(archetype, weaponArchetype, computeCollisionMesh)
 	{
-		m_velocity = randomVelocity();
+		m_computer = true;
 	}
 
 	void ComputerAgent::update(const Config::Real & dt) {
-		// Derp
+		SmithAgent::update(dt);
 	}
 	void ComputerAgent::onCollision (const CollisionMessage & message) {
 		// Derp

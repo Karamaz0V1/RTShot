@@ -18,7 +18,8 @@
 #include <GameElements/BallisticBullet.h>
 #include <Ext/Ogre/ComputeBoundingBox.h>
 #include <Triggers/BasicCollisionDetector.h>
-#include <GameElements/RandomAgent.h>
+#include <GameElements/HumanAgent.h>
+#include <GameElements/ComputerAgent.h>
 
 namespace OgreFramework
 {
@@ -145,7 +146,11 @@ namespace OgreFramework
 			const GameElements::WeaponsArchetypes::Archetype * weapon = GlobalConfiguration::getConfigurationLoader()->getWeaponsArchetypes().get(unit->m_weapon) ;
 
 			if(weapon==NULL) { ::std::cout<<"HippoB: bad weapon!" ; char c ; ::std::cin>>c ; }			
-			GameElements::RandomAgent * anderson = new GameElements::RandomAgent(unit, weapon);
+			//GameElements::RandomAgent * anderson = new GameElements::RandomAgent(unit, weapon);
+			GameElements::SmithAgent * anderson;
+			if (b < 3) anderson = new GameElements::ComputerAgent(unit, weapon);
+			else  anderson = new GameElements::HumanAgent(unit, weapon);
+
 			agentBlackBox.push_back(anderson);
 			GameElements::RandomAgent::Pointer m_entityAdapter = anderson ;
 			m_entityAdapter->setPosition(GlobalConfiguration::getCurrentMap()->toWorldCoordinates(GlobalConfiguration::getCurrentMap()->findFreeLocation()).push(0.0)) ;
@@ -176,7 +181,7 @@ namespace OgreFramework
 				if(agentBlackBox.size()!=0){
 					int b=agentBlackBox.size()-1;
 					for (int i=b;i>-1;i--){
-						GameElements::RandomAgent * a = agentBlackBox[i];
+						GameElements::SmithAgent * a = agentBlackBox[i];
 						agentBlackBox.pop_back();
 						a->destroy();
 					}
