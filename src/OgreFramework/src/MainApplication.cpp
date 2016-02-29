@@ -311,13 +311,14 @@ namespace OgreFramework
 			if(agentBlackBox[i]==NULL){
 				if(i>agentBlackBox.size()/2){
 					nbMoi--;
+					//std::cout<<nbMoi<<"\n";
 				}else{
 					nbIA--;
 				}
 			}
 		}
 
-		if(nbMoi==0){
+		if(nbMoi==1){
 			gameOver=true;
 			playerWon=false;
 		}else if(nbIA==0){

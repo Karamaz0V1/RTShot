@@ -53,8 +53,10 @@ namespace OgreFramework
 						notifySelected(laink) ;
 					}
 					else {
-						m_lastAgent->setTarget(NULL);
-						m_lastAgent->go2(getDestinationPos(arg,x,y).projectZ());
+						if (! m_lastAgent->m_computer) {
+							m_lastAgent->setTarget(NULL);
+							m_lastAgent->go2(getDestinationPos(arg,x,y).projectZ());
+						}
 					}
 				}	
 			}

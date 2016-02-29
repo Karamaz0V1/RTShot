@@ -59,6 +59,7 @@ namespace GameElements
 			bool m_collision;
 			Math::RoadMap * m_map;
 			bool m_mapInit;
+		public:
 			bool m_computer;
 	};
 }
